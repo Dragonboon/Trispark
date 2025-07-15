@@ -56,10 +56,10 @@ func on_selected_piece(piece: Match3Piece) -> void:
 			target_cells.append(cell)
 			
 		Match3BoardConfiguration.BoardMovements.Row:
-			target_cells.append_array(board.finder.grid_cells_from_row(cell.row, true))
+			target_cells.append_array(board.finder.cells_from_row(cell.row, true))
 			
 		Match3BoardConfiguration.BoardMovements.Column:
-			target_cells.append_array(board.finder.grid_cells_from_column(cell.column, true))
+			target_cells.append_array(board.finder.cells_from_column(cell.column, true))
 			
 		Match3BoardConfiguration.BoardMovements.Cross:
 			target_cells.append_array(board.finder.cross_cells_from(cell, true))
