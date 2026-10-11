@@ -1,57 +1,90 @@
-# Match3-Board
+<div align="center">
+  <img src="icon.svg" width="112" height="112" alt="Match3-Board icon"/>
+  <h1>Match3-Board</h1>
+  <p><strong>A configurable match-3 gameplay toolkit for Godot 4.7.</strong></p>
+  <p>Build boards from Resources. Customize movement, presentation and game reactions without forking the plugin.</p>
+  <p><a href="https://github.com/sempitern0/match3-board/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/sempitern0/match3-board/issues">Issues</a> · <a href="docs/CUSTOMIZATION.md">Customization</a> · <a href="docs/EVENTS_AND_REACTIONS.md">Events</a></p>
+</div>
 
-Lightweight, configurable match-3 gameplay for **Godot 4.7**. Nine swap modes, click/drag/slide input, falling or lateral refill, optional diagonals, special pieces, highlight and animation hooks.
+![Interactive Match3 demo](images/demo.png)
 
-![Interactive demo](images/demo.png)
+## Features
 
-## Install
+- **Nine movement modes:** adjacent, adjacent + diagonals, diagonal-only, free, row, column, cross, diagonal cross, and line connection.
+- **Three input styles:** click, drag and slide.
+- **Three refill modes:** downward gravity, lateral gravity (Side) and in-place replacement.
+- **Matching rules:** horizontal, vertical, T/L patterns, optional diagonals, minimum match length and special piece spawn rules.
+- **Visual customization:** scenes for cells/pieces, pluggable animator, customizable highlighter, editor preview and Resource movement adapter.
+- **Integration:** native Godot signals, typed `Match3BoardEvent` contexts and optional `Match3Reaction` Resources for audio, animations and scene callbacks.
+- No autoloads, no required external dependencies.
 
-Copy `addons/match3/` to the same path inside your Godot project. Enable **Match3-Board** under **Project Settings → Plugins**. No autoload or third-party dependency is required.
+## Installation
 
-**Start with the interactive scene:** `addons/match3/demo/demo.tscn`. It demonstrates all movement, selection, refill, animation and highlighting options. Demo assets and scripts are examples, not part of the minimal runtime API.
+Copy the [`addons/match3/`](addons/match3) folder into your Godot project's `res://addons/match3/` directory. Enable **Match3-Board** in **Project → Project Settings → Plugins**.
 
-## Make your own board
+**Try the complete demo:** open [`addons/match3/demo/demo.tscn`](addons/match3/demo/demo.tscn). It demonstrates the existing gameplay modes, animations, selection and highlighting. Demo scripts and assets are reference examples, not mandatory for a minimal integration.
 
-1. Create a Node2D with script `Match3Board`.
-2. Assign a `Match3BoardConfiguration` Resource containing a `grid_cell_scene` (root `Match3GridCell`) and `available_pieces` (each a `Match3PieceConfiguration`, containing a scene with `Match3Piece`).
-3. Choose `swap_mode`, `selection_mode` and `fill_mode`. `diagonal_shape` enables diagonal **matches**, independently of diagonal **swaps**.
-4. Optionally assign `Match3Animator`, `Match3Highlighter` and `Match3LineConnector` child nodes. The board is playable without animator or highlighter. `ConnectLine` requires a line connector.
+## Quick start
+
+1. Add a `Match3Board` Node2D to your scene.
+2. Create and assign a `Match3BoardConfiguration` Resource.
+3. Assign `grid_cell_scene` (root `Match3GridCell`) and at least two `Match3PieceConfiguration` entries in `available_pieces`, each pointing to a `Match3Piece` scene with a unique ID and a `Match3PieceWeight`.
+4. Choose a movement mode, selection mode and fill mode. Keep `auto_start` enabled, or call `await board.start_board()` yourself.
+5. Optionally add `Match3Animator`, `Match3Highlighter` and `Match3LineConnector` child nodes and assign them to the board (the connector is required for `ConnectLine` mode).
 
 ```gdscript
+extends Node2D
+
 @onready var board: Match3Board = $Match3Board
 
 func _ready() -> void:
-    board.consumed_sequence.connect(func(sequence: Match3Sequence):
-        print("Consumed: ", sequence.size()))
-    # Keep configuration.auto_start true for automatic initial generation.
-    # Otherwise, call await board.start_board() after the board is ready.
+    board.consumed_sequence.connect(_on_match)
+    board.swap_rejected.connect(_on_rejected_swap)
 
-func get_possible_moves(cell: Match3GridCell) -> Array[Match3GridCell]:
-    return board.get_valid_swap_targets(cell)
+func _on_match(sequence: Match3Sequence) -> void:
+    print("Matched %d pieces" % sequence.size())
 
-func match_snapshot() -> Array[Match3Sequence]:
-    return board.get_matches()
+func _on_rejected_swap(_from: Match3GridCell, _to: Match3GridCell) -> void:
+    print("Invalid match")
+
+func valid_destinations(from_cell: Match3GridCell) -> Array[Match3GridCell]:
+    return board.get_valid_swap_targets(from_cell)
 ```
 
-## Configuration and extensibility
+## Public API
 
-- **Nine swap modes:** Adjacent, AdjacentWithDiagonals, AdjacentDiagonals, Free, Row, Column, Cross, CrossDiagonal, ConnectLine.
-- **Selection:** Click, Drag or Slide. **Refill:** FallDown, Side or InPlace.
-- **Sequence detection:** Horizontal, Vertical, TShape, LShape and optional Diagonal. `min_match` controls the minimum run.
-- **Custom movement:** assign a subclassed `Match3MovementAdapter` Resource to `configuration.movement_adapter` and implement pure `allows_swap(board, from_cell, to_cell)`. This overrides spatial restrictions in all non-ConnectLine modes; the board still checks piece swap permissions and obstacles. The highlighter reads the exact same valid target query.
-- **Custom look:** subclass `Match3Highlighter` for a visual style or reuse the demo class and change its `highlight_texture`. Subclass `Match3Animator` to animate hooks such as `swap_pieces`, `fall_pieces`, `consume_sequences` and `spawn_pieces`.
-- **Custom pieces:** subclass `Match3Piece` and override `match_with`, `trigger` or `spawn` to define special effects; use `SequenceConsumeRule` Resources to create special pieces on matches.
+| API | Purpose |
+|---|---|
+| `start_board()` | Initialize manually when auto-start is disabled |
+| `get_cell(column, row)` | Access a grid cell |
+| `get_matches()` | Find matching sequences |
+| `can_swap_cells(from, to)` | Pure validity check |
+| `get_valid_swap_targets(cell)` | Find allowed destinations, including custom movement adapter rules |
+| `swap_pieces(from_piece, to_piece)` | Request an animated or immediate swap |
+| `shuffle()` | Shuffle the board |
+| `lock()` / `unlock()` | Toggle interaction |
 
-The public board API includes `start_board()`, `get_cell(column, row)`, `get_matches()`, `can_swap_cells(from, to)`, `get_valid_swap_targets(cell)`, `swap_pieces(from_piece, to_piece)`, `shuffle()`, `lock()` and `unlock()`. Subscribe to `state_changed`, `consumed_sequence`, `swap_accepted` and `swap_rejected` for game logic.
+Use signals such as `state_changed`, `swap_accepted`, `swap_rejected`, `consumed_sequence`, `drawed_pieces`, `selected_piece` and `finished_available_movements`. For structured event context, use `event_emitted`.
 
-The editor preview is optional and remains inside the original demo, where the preview is generated on demand.
+## Extending your game
 
-## Test
+| What to customize | Extension point |
+|---|---|
+| Rules, pieces and board geometry | `Match3BoardConfiguration`, `Match3PieceConfiguration`, `Match3PieceWeight` |
+| Swap restrictions | `Match3MovementAdapter` Resource |
+| Tile/gem appearance and special logic | `Match3GridCell` and `Match3Piece` scenes/scripts |
+| Highlights | `Match3Highlighter` subclass |
+| Transitions and tweens | `Match3Animator` subclass |
+| UI, SFX, VFX and game-specific actions | `Match3Reaction` Resources or native signals |
+
+**Guides:** [Full customization, every animator hook and settings](docs/CUSTOMIZATION.md) · [Events, reactive audio/animation and method calls](docs/EVENTS_AND_REACTIONS.md).
+
+## Development & compatibility
+
+Godot **4.7.2** is the CI target. To execute the headless regressions:
 
 ```sh
 python3 scripts/ci/run_tests.py --godot godot
 ```
 
-The test runner imports the project and checks diagonal/gravity and movement policies with Godot 4.7.2 in GitHub Actions.
-
-Licensed under MIT. See [LICENSE](LICENSE).
+The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/sempitern0/match3-board/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).

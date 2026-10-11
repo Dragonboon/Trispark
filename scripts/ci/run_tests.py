@@ -37,7 +37,8 @@ def main() -> int:
     if not run([args.godot, "--headless", "--path", root, "--editor", "--quit"], args.timeout):
         return 1
     for script, marker in [("test_diagonals.gd", "Match3 diagonal/gravity regression: PASS"),
-                           ("test_movement_api.gd", "Match3 movement API regression: PASS")]:
+                           ("test_movement_api.gd", "Match3 movement API regression: PASS"),
+                           ("test_event_api.gd", "Match3 events and reactions regression: PASS")]:
         if not run([args.godot, "--headless", "--path", root, "--script",
                     "res://tests/" + script], args.timeout, require_pass=True, pass_marker=marker):
             return 1
