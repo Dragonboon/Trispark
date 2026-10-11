@@ -17,7 +17,7 @@ func shuffle() -> Array[ShuffleMovement]:
 	var shuffled_cells: Array[Match3GridCell] = []
 	var shuffle_movements: Array[ShuffleMovement] = []
 	 
-	while shuffled_cells.size() != cells.size():
+	while cells.size() >= 2:
 		cells.shuffle()
 		var front_cell: Match3GridCell = cells.pop_front()
 		var back_cell: Match3GridCell = cells.pop_back()

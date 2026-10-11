@@ -30,7 +30,7 @@ func _enter_tree() -> void:
 	
 func _ready() -> void:
 	if board == null:
-		get_tree().get_first_node_in_group(Match3Board.GroupName)
+		board = get_tree().get_first_node_in_group(Match3Board.GroupName)
 	
 	set_process(false)
 	set_process_unhandled_input(false)

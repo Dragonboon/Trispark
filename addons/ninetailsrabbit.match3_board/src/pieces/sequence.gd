@@ -37,10 +37,12 @@ static func create_from_pieces(pieces: Array[Match3Piece], selected_shape: Shape
 	
 	
 func duplicate() -> Match3Sequence:
-	return Match3Sequence.new(cells.duplicate(true))
+	return Match3Sequence.new(cells.duplicate(), shape)
 
 	
 func all_pieces_are_the_same() -> bool:
+	if pieces().is_empty():
+		return false
 	var origin_piece: Match3Piece = pieces().front()
 	
 	return pieces().all(func(piece: Match3Piece): return piece.match_with(origin_piece))
@@ -205,24 +207,25 @@ func _detect_shape() -> Shapes:
 	if contains_special_piece():
 		return Shapes.Special
 		
-	var is_horizontal: bool = false
-	var is_vertical: bool = false
-	var is_diagonal: bool = false
-	
-	for index: int in cells.size():
-		is_horizontal = index == 0 or cells[index].in_same_column_as(cells[index - 1])
-		is_vertical = index == 0 or cells[index].in_same_row_as(cells[index - 1])
-		is_diagonal = index == 0 or cells[index].in_diagonal_with(cells[index - 1])
-	
-	## We don't need to detect TShape or LShape as this ones are set always manually when the sequence it's d
-	if is_horizontal:
-		return Shapes.Horizontal
-	elif is_vertical:
-		return Shapes.Vertical
-	elif is_diagonal:
-		return Shapes.Diagonal
-	else:
+	if cells.size() < 2:
 		return Shapes.Irregular
+	var same_row := true
+	var same_column := true
+	var same_diagonal := true
+	var step := cells[1].board_position() - cells[0].board_position()
+	for i in range(1, cells.size()):
+		var before := cells[i - 1]
+		var current := cells[i]
+		same_row = same_row and before.row == current.row
+		same_column = same_column and before.column == current.column
+		same_diagonal = same_diagonal and absi(step.x) == 1 and absi(step.y) == 1 and current.board_position() - before.board_position() == step
+	if same_row:
+		return Shapes.Horizontal
+	if same_column:
+		return Shapes.Vertical
+	if same_diagonal:
+		return Shapes.Diagonal
+	return Shapes.Irregular
 
 
 func _sort_by_priority(a: Match3Piece, b: Match3Piece): 

@@ -357,8 +357,6 @@ func add_special_piece_to_queue(piece: Match3Piece) -> void:
 			
 
 func consume_sequence(sequence: Match3Sequence) -> void:
-	var pending_special_pieces: Array[Match3Piece] = []
-	
 	if sequence.contains_special_piece():
 		for special_piece: Match3Piece in sequence.special_pieces():
 			add_special_piece_to_queue(special_piece)
@@ -371,7 +369,7 @@ func consume_sequence(sequence: Match3Sequence) -> void:
 	await get_tree().process_frame
 	
 	if pending_special_pieces.is_empty():
-		travel_to(BoardState.Fall if (BoardState.Consume or BoardState.SpecialConsume) else BoardState.Consume)
+		travel_to(BoardState.Fall)
 	else:
 		travel_to(BoardState.SpecialConsume)
 		
@@ -407,7 +405,7 @@ func consume_sequences(sequences: Array[Match3Sequence]) -> void:
 	await get_tree().process_frame
 	
 	if pending_special_pieces.is_empty():
-		travel_to(BoardState.Fall if (BoardState.Consume or BoardState.SpecialConsume) else BoardState.Consume)
+		travel_to(BoardState.Fall)
 	else:
 		if state_is_special_consume():
 			consume_special_pieces(pending_special_pieces)
@@ -536,17 +534,27 @@ func swap_movement_is_valid(from_cell: Match3GridCell, to_cell: Match3GridCell) 
 		return false
 	
 	elif from_cell.piece.is_special() and to_cell.piece.is_special():
+		if not _swap_positions_allowed(from_cell, to_cell):
+			return false
 		add_special_pieces_to_queue([from_cell.piece, to_cell.piece])
 		return true
 		
 	elif from_cell.piece.is_special() and not to_cell.piece.is_special():
+		if not _swap_positions_allowed(from_cell, to_cell):
+			return false
 		add_special_piece_to_queue(from_cell.piece)
 		return true
 		
 	elif not from_cell.piece.is_special() and to_cell.piece.is_special():
+		if not _swap_positions_allowed(from_cell, to_cell):
+			return false
 		add_special_piece_to_queue(to_cell.piece)
 		return true
 	
+	return _swap_positions_allowed(from_cell, to_cell)
+
+
+func _swap_positions_allowed(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
 	match configuration.swap_mode:
 		Match3BoardConfiguration.BoardMovements.Adjacent:
 			return from_cell.is_adjacent_to(to_cell)

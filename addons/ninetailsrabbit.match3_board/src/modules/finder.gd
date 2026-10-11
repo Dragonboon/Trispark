@@ -53,8 +53,8 @@ func top_cells_from(origin_cell: Match3GridCell, only_usables: bool = false) -> 
 	if current_cell.is_top_border():
 		return []
 	
-	while current_cell.neighbours()["top"] != null:
-		current_cell = current_cell.neighbours()["top"]
+	while current_cell.neighbour_up != null:
+		current_cell = current_cell.neighbour_up
 		cells.append(current_cell)
 	
 	return cells.filter(_is_usable_cell) if only_usables else cells
@@ -107,11 +107,11 @@ func left_cells_from(origin_cell: Match3GridCell, only_usables: bool = false) ->
 func diagonal_top_right_cells_from(cell: Match3GridCell, distance: int, only_usables: bool = false) -> Array[Match3GridCell]:
 	var diagonal_cells: Array[Match3GridCell] = []
 	
-	distance = clamp(distance, 0, board.configuration.grid_width)
+	distance = maxi(0, distance)
 	var current_cell = cell.diagonal_neighbour_top_right
 	
 	if distance > 0 and current_cell is Match3GridCell:
-		diagonal_cells.append_array(([current_cell] as Array[Match3GridCell]) + diagonal_top_right_cells_from(current_cell, distance - 1, only_usables))
+		diagonal_cells.append_array([current_cell] + diagonal_top_right_cells_from(current_cell, distance - 1, only_usables))
 	
 	return diagonal_cells.filter(_is_usable_cell) if only_usables else diagonal_cells
 
@@ -119,11 +119,11 @@ func diagonal_top_right_cells_from(cell: Match3GridCell, distance: int, only_usa
 func diagonal_top_left_cells_from(cell: Match3GridCell, distance: int, only_usables: bool = false) -> Array[Match3GridCell]:
 	var diagonal_cells: Array[Match3GridCell] = []
 	
-	distance = clamp(distance, 0, board.configuration.grid_width)
+	distance = maxi(0, distance)
 	var current_cell = cell.diagonal_neighbour_top_left
 	
 	if distance > 0 and current_cell is Match3GridCell:
-		diagonal_cells.append_array(([current_cell] as Array[Match3GridCell]) + diagonal_top_left_cells_from(current_cell, distance - 1, only_usables))
+		diagonal_cells.append_array([current_cell] + diagonal_top_left_cells_from(current_cell, distance - 1, only_usables))
 	
 	return diagonal_cells.filter(_is_usable_cell) if only_usables else diagonal_cells
 
@@ -132,11 +132,11 @@ func diagonal_top_left_cells_from(cell: Match3GridCell, distance: int, only_usab
 func diagonal_bottom_left_cells_from(cell: Match3GridCell, distance: int, only_usables: bool = false) -> Array[Match3GridCell]:
 	var diagonal_cells: Array[Match3GridCell] = []
 	
-	distance = clamp(distance, 0, board.configuration.grid_width)
+	distance = maxi(0, distance)
 	var current_cell = cell.diagonal_neighbour_bottom_left
 	
 	if distance > 0 and current_cell is Match3GridCell:
-		diagonal_cells.append_array(([current_cell] as Array[Match3GridCell]) + diagonal_bottom_left_cells_from(current_cell, distance - 1, only_usables))
+		diagonal_cells.append_array([current_cell] + diagonal_bottom_left_cells_from(current_cell, distance - 1, only_usables))
 	
 	return diagonal_cells.filter(_is_usable_cell) if only_usables else diagonal_cells
 
@@ -144,11 +144,11 @@ func diagonal_bottom_left_cells_from(cell: Match3GridCell, distance: int, only_u
 func diagonal_bottom_right_cells_from(cell: Match3GridCell, distance: int, only_usables: bool = false) -> Array[Match3GridCell]:
 	var diagonal_cells: Array[Match3GridCell] = []
 	
-	distance = clamp(distance, 0, board.configuration.grid_width)
+	distance = maxi(0, distance)
 	var current_cell = cell.diagonal_neighbour_bottom_right
 	
 	if distance > 0 and current_cell is Match3GridCell:
-		diagonal_cells.append_array(([current_cell] as Array[Match3GridCell]) + diagonal_bottom_right_cells_from(current_cell, distance - 1, only_usables))
+		diagonal_cells.append_array([current_cell] + diagonal_bottom_right_cells_from(current_cell, distance - 1, only_usables))
 	
 	return diagonal_cells.filter(_is_usable_cell) if only_usables else diagonal_cells
 

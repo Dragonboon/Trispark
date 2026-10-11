@@ -219,7 +219,7 @@ func neighbour_up_has_piece() -> bool:
 
 
 func neighbour_bottom_has_piece() -> bool:
-	return neighbour_up and neighbour_up.has_piece()
+	return neighbour_bottom and neighbour_bottom.has_piece()
 
 
 func neighbour_right_has_piece() -> bool:
@@ -227,7 +227,7 @@ func neighbour_right_has_piece() -> bool:
 
 
 func neighbour_left_has_piece() -> bool:
-	return neighbour_right and neighbour_right.has_piece()
+	return neighbour_left and neighbour_left.has_piece()
 
 
 func diagonal_neighbour_bottom_left_has_piece() -> bool:
@@ -247,7 +247,7 @@ func diagonal_neighbour_top_right_has_piece() -> bool:
 
 
 func neighbour_bottom_is_empty() -> bool:
-	return neighbour_up and neighbour_up.is_empty()
+	return neighbour_bottom and neighbour_bottom.is_empty()
 
 
 func neighbour_right_is_empty() -> bool:
@@ -255,7 +255,7 @@ func neighbour_right_is_empty() -> bool:
 
 
 func neighbour_left_is_empty() -> bool:
-	return neighbour_right and neighbour_right.is_empty()
+	return neighbour_left and neighbour_left.is_empty()
 
 
 func diagonal_neighbour_bottom_left_is_empty() -> bool:

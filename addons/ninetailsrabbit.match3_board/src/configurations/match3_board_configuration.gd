@@ -112,6 +112,8 @@ enum AnimationFlow {
 @export var tshape: bool = true
 ## When enabled, LShape  matchs between pieces are allowed
 @export var lshape: bool = true
+## Include both diagonal axes in match detection (not just diagonal swapping).
+@export var diagonal_shape: bool = false
 ## The minimum amount of pieces to make a match valid
 
 @export_group("Animations")
@@ -210,13 +212,13 @@ func swap_mode_is_connect_line() -> bool:
 
 
 func draw_cells_and_pieces_animation_is_serial() -> bool:
-	return sequence_animation == AnimationFlow.Serial
-	
-	
+	return draw_cells_and_pieces_animation == AnimationFlow.Serial
+
+
 func draw_cells_and_pieces_animation_is_parallel() -> bool:
-	return sequence_animation == AnimationFlow.Parallel
-	
-	
+	return draw_cells_and_pieces_animation == AnimationFlow.Parallel
+
+
 func sequence_animation_is_serial() -> bool:
 	return sequence_animation == AnimationFlow.Serial
 	

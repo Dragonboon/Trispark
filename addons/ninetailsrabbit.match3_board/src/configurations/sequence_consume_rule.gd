@@ -35,7 +35,7 @@ func meet_conditions(sequence: Match3Sequence) -> bool:
 			func(conf: Match3PieceConfiguration): return piece.id == conf.id)
 		
 		if found_pieces.size() > 0:
-			pieces_configuration.erase(pieces_configuration.front())
+			pieces_configuration.erase(found_pieces.front())
 			valid_pieces.append(true)
 	
 	if strict_size_comparison:
