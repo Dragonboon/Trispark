@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dyxg5roal1gmk"]
+
+[ext_resource type="Script" uid="uid://dlxjjwcxia6oq" path="res://addons/match3/src/cells/grid_cell.gd" id="1_3uju8"]
+[ext_resource type="Texture2D" uid="uid://b6m4agye6vlqx" path="res://addons/match3/demo/assets/odd.png" id="2_8pd4v"]
+[ext_resource type="Texture2D" uid="uid://bitl5y7wpoxpl" path="res://addons/match3/demo/assets/even.png" id="3_6yncg"]
+
+[node name="Match3GridCellUI" type="Node2D"]
+script = ExtResource("1_3uju8")
+odd_cell_texture = ExtResource("2_8pd4v")
+even_cell_texture = ExtResource("3_6yncg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

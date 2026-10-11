@@ -22,7 +22,7 @@ config/icon="res://icon.svg"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ninetailsrabbit.match3_board/plugin.cfg")
+enabled=PackedStringArray("res://addons/match3/plugin.cfg")
 
 [input]
 
