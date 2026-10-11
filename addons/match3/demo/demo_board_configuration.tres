@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://tncprvn1fkmb" path="res://addons/match3/demo/pieces/normal/purple_piece_configuration.tres" id="5_m0c8b"]
 [ext_resource type="Resource" uid="uid://dx168ycw2k4i3" path="res://addons/match3/demo/pieces/special/special_blue_piece_configuration.tres" id="6_yygqi"]
 [ext_resource type="Resource" uid="uid://dsyolaf2k8kxh" path="res://addons/match3/demo/pieces/special/special_blue_piece_5_configuration.tres" id="7_0ij14"]
+[ext_resource type="Script" uid="uid://df7ee5bbne2eo" path="res://addons/match3/src/events/match3_reaction.gd" id="8_g7rj3"]
 [ext_resource type="PackedScene" uid="uid://dyxg5roal1gmk" path="res://addons/match3/src/cells/grid_cell.tscn" id="8_vsxvo"]
 [ext_resource type="Script" uid="uid://3l3gq7rur1l4" path="res://addons/match3/src/configurations/match3_board_configuration.gd" id="9_xxc5n"]
 [ext_resource type="Script" uid="uid://cylvacvajy85d" path="res://addons/match3/src/configurations/sequence_consume_rule.gd" id="10_sdrx5"]
