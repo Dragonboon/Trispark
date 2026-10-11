@@ -24,5 +24,3 @@ func remove_highlight() -> void:
 	current_highlighted_cells.clear()
 
 	current_highlighted_pieces.clear()
-
-

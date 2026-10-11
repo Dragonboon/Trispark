@@ -2,8 +2,8 @@ class_name Match3PieceWeight extends Resource
 
 @export var value: float = 1.0:
 	set(value):
-		field = maxf(0.0, value)
-		current_weight = field
+		value = maxf(0.0, value)
+		current_weight = value
 		
 var current_weight: float = value
 var total_accum_weight: float = 0.0

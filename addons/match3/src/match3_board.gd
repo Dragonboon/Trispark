@@ -115,7 +115,7 @@ func _ready() -> void:
 	locked.connect(on_board_locked)
 	unlocked.connect(on_board_unlocked)
 	state_changed.connect(on_board_state_changed)
-drawed_pieces.connect(on_drawed_pieces)
+	drawed_pieces.connect(on_drawed_pieces)
 	
 	if line_connector:
 		line_connector.canceled_match.connect(on_line_connector_canceled_match)
