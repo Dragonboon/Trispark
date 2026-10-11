@@ -17,7 +17,7 @@ config/ninetailsrabbit.match3_board/update_notification_enabled=true
 config/name="Match3_Board"
 config/description="This lightweight library provides the core logic and functionality you need to build engaging match-3 games. Focus on game design and mechanics while leaving the complex logic to this library"
 config/version="2.1.0"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [editor_plugins]

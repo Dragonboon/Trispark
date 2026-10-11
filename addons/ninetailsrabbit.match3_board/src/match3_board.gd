@@ -126,6 +126,39 @@ func _ready() -> void:
 		await draw_pieces()
 	
 
+## Build a board explicitly when auto_start is disabled. Safe to call repeatedly.
+func start_board() -> void:
+	if configuration == null:
+		push_error("Match3Board needs a configuration")
+		return
+	if grid_cells.is_empty():
+		await draw_cells()
+	if pieces().is_empty():
+		await draw_pieces()
+
+
+## Find a logical cell by column and row; returns null out of bounds.
+func get_cell(column: int, row: int) -> Match3GridCell:
+	return finder.get_cell(column, row)
+
+
+## Find all current board matches, including diagonals when enabled.
+func get_matches() -> Array[Match3Sequence]:
+	return sequence_detector.find_board_sequences()
+
+
+## True while the board can accept user moves.
+func is_interaction_enabled() -> bool:
+	return not is_locked and state_is_wait_for_input()
+
+
+func set_interaction_enabled(enabled: bool) -> void:
+	if enabled:
+		unlock()
+	else:
+		lock()
+
+
 func distance() -> int:
 	return configuration.grid_width + configuration.grid_height
 	
@@ -276,8 +309,9 @@ func add_piece_to_generator(piece_configuration: Match3PieceConfiguration) -> Ma
 #region Pieces
 func remove_matches_from_board() -> void:
 	var sequences: Array[Match3Sequence] = sequence_detector.find_board_sequences()
-	
-	while sequences.size() > 0:
+	var attempts := 0
+	while not sequences.is_empty() and attempts < 100:
+		attempts += 1
 		for sequence: Match3Sequence in sequences:
 			var cells_to_change = sequence.cells.slice(0, (sequence.cells.size() / configuration.min_match) + 1)
 			var piece_exceptions: Array[Match3PieceConfiguration] = []
@@ -357,6 +391,8 @@ func add_special_piece_to_queue(piece: Match3Piece) -> void:
 			
 
 func consume_sequence(sequence: Match3Sequence) -> void:
+	var pending_special_pieces: Array[Match3Piece] = []
+	
 	if sequence.contains_special_piece():
 		for special_piece: Match3Piece in sequence.special_pieces():
 			add_special_piece_to_queue(special_piece)
@@ -369,7 +405,7 @@ func consume_sequence(sequence: Match3Sequence) -> void:
 	await get_tree().process_frame
 	
 	if pending_special_pieces.is_empty():
-		travel_to(BoardState.Fall)
+		travel_to(BoardState.Fall if (BoardState.Consume or BoardState.SpecialConsume) else BoardState.Consume)
 	else:
 		travel_to(BoardState.SpecialConsume)
 		
@@ -405,7 +441,7 @@ func consume_sequences(sequences: Array[Match3Sequence]) -> void:
 	await get_tree().process_frame
 	
 	if pending_special_pieces.is_empty():
-		travel_to(BoardState.Fall)
+		travel_to(BoardState.Fall if (BoardState.Consume or BoardState.SpecialConsume) else BoardState.Consume)
 	else:
 		if state_is_special_consume():
 			consume_special_pieces(pending_special_pieces)
@@ -534,27 +570,17 @@ func swap_movement_is_valid(from_cell: Match3GridCell, to_cell: Match3GridCell) 
 		return false
 	
 	elif from_cell.piece.is_special() and to_cell.piece.is_special():
-		if not _swap_positions_allowed(from_cell, to_cell):
-			return false
 		add_special_pieces_to_queue([from_cell.piece, to_cell.piece])
 		return true
 		
 	elif from_cell.piece.is_special() and not to_cell.piece.is_special():
-		if not _swap_positions_allowed(from_cell, to_cell):
-			return false
 		add_special_piece_to_queue(from_cell.piece)
 		return true
 		
 	elif not from_cell.piece.is_special() and to_cell.piece.is_special():
-		if not _swap_positions_allowed(from_cell, to_cell):
-			return false
 		add_special_piece_to_queue(to_cell.piece)
 		return true
 	
-	return _swap_positions_allowed(from_cell, to_cell)
-
-
-func _swap_positions_allowed(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
 	match configuration.swap_mode:
 		Match3BoardConfiguration.BoardMovements.Adjacent:
 			return from_cell.is_adjacent_to(to_cell)
