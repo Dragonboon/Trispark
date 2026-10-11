@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/ninetailsrabbit.match3_board/src/match3_board.gd" id="1"]
+[ext_resource type="Resource" path="res://addons/ninetailsrabbit.match3_board/demo/demo_board_configuration.tres" id="2"]
+
+[node name="Match3Board" type="Node2D"]
+script = ExtResource("1")
+configuration = ExtResource("2")
