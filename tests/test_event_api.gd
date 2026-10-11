@@ -58,6 +58,7 @@ func _verify(board: Match3Board, receiver: Node, host: Node2D) -> void:
 	assert(observed.size() == 2 and observed[1].type == Match3BoardEvent.Type.SWAP_ACCEPTED)
 	assert(receiver.received.size() == 1, "Filtered reaction ran on another event.")
 
+	board.current_available_moves = 8
 	board.current_available_moves = 7
 	assert(observed.back().type == Match3BoardEvent.Type.MOVE_CONSUMED)
 	assert(observed.back().moves_remaining == 7)
