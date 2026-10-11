@@ -1,4 +1,6 @@
 class_name Match3BoardFinder extends RefCounted
+## Queries the owning board's logical cells, never scene-wide piece groups.
+## Safe for multiple boards and detached logical grids used by tools/tests.
 
 
 var board: Match3Board
@@ -210,7 +212,7 @@ func cell_with_pieces_of_type(type: Match3PieceConfiguration.PieceType) -> Array
 	return cells
 
 
-func cell_with_pieces_of_color(color: Match3PieceConfiguration.PieceType) -> Array[Match3GridCell]:
+func cell_with_pieces_of_color(color: Color) -> Array[Match3GridCell]:
 	var cells: Array[Match3GridCell] = []
 	cells.assign(pieces_of_color(color).map(func(piece: Match3Piece): return piece.cell))
 	
@@ -218,24 +220,19 @@ func cell_with_pieces_of_color(color: Match3PieceConfiguration.PieceType) -> Arr
 
 
 func pieces() -> Array[Match3Piece]:
-	var pieces: Array[Match3Piece] = []
-	pieces.assign(board.get_tree().get_nodes_in_group(Match3Piece.GroupName))
+	var result: Array[Match3Piece] = []
+	for cell: Match3GridCell in board.grid_cells_flattened:
+		if is_instance_valid(cell.piece) and not cell.piece.is_queued_for_deletion():
+			result.append(cell.piece)
+	return result
 
-	return pieces
-	
 
 func special_pieces() -> Array[Match3Piece]:
-	var pieces: Array[Match3Piece] = []
-	pieces.assign(board.get_tree().get_nodes_in_group(Match3Piece.SpecialGroupName))
-
-	return pieces
+	return pieces_of_type(Match3PieceConfiguration.PieceType.Special)
 
 
 func obstacle_pieces() -> Array[Match3Piece]:
-	var pieces: Array[Match3Piece] = []
-	pieces.assign(board.get_tree().get_nodes_in_group(Match3Piece.ObstacleGroupName))
-
-	return pieces
+	return pieces_of_type(Match3PieceConfiguration.PieceType.Obstacle)
 
 
 func pieces_of_id(id: StringName) -> Array[Match3Piece]:
@@ -253,17 +250,7 @@ func pieces_of_shape(shape: StringName) -> Array[Match3Piece]:
 
 
 func pieces_of_type(type: Match3PieceConfiguration.PieceType) -> Array[Match3Piece]:
-	var result: Array[Match3Piece] = []
-	
-	match type:
-		Match3PieceConfiguration.PieceType.Normal:
-			result.assign(board.get_tree().get_nodes_in_group(Match3Piece.GroupName))
-		Match3PieceConfiguration.PieceType.Special:
-			result.assign(board.get_tree().get_nodes_in_group(Match3Piece.SpecialGroupName))
-		Match3PieceConfiguration.PieceType.Obstacle:
-			result.assign(board.get_tree().get_nodes_in_group(Match3Piece.ObstacleGroupName))
-			
-	return result
+	return pieces().filter(func(piece: Match3Piece) -> bool: return piece.type == type)
 
 
 func pieces_of_color(color: Color) -> Array[Match3Piece]:

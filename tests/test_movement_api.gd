@@ -50,4 +50,8 @@ func _initialize() -> void:
 	assert(not board.swap_movement_is_valid(center, board.get_cell(4, 4)), "Invalid special move accepted.")
 	assert(board.pending_special_pieces.is_empty(), "Invalid swap queued a special piece.")
 	print("Match3 movement API regression: PASS")
+	for cell: Match3GridCell in board.grid_cells_flattened:
+		cell.remove_piece()
+		cell.free()
+	board.free()
 	quit()

@@ -243,8 +243,14 @@ func spawn(board: Match3Board, sequence: Match3Sequence) -> Match3GridCell:
 
 
 func detect_near_piece() -> Match3Piece:
+	var board: Match3Board = Match3Board.resolve_for(self)
+	if board == null or detection_area == null:
+		return null
+	var candidates: Array[Area2D] = detection_area.get_overlapping_areas().filter(
+		func(area: Area2D) -> bool: return board.owns_piece(area.get_parent() as Match3Piece)
+	)
 	var nearest_piece_area: Dictionary = Match3BoardPluginUtilities.get_nearest_node_by_distance(
-		global_position, detection_area.get_overlapping_areas()
+		global_position, candidates
 		)
 	
 	var piece_area = nearest_piece_area.get("target", null)

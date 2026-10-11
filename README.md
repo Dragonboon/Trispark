@@ -98,3 +98,7 @@ Set `random_seed = -1` (default) for a different random sequence each session, o
 For demo-free cell visuals, use `addons/match3/src/cells/basic_grid_cell.tscn` and assign your own texture resources to the cell properties. The original `grid_cell.tscn` retains its demo appearance for existing games.
 
 See [runtime integration notes](docs/RUNTIME_INTEGRATION.md) for multiboard integration and safe event handling.
+
+### Integrating multiple boards and menus
+
+Each board owns its piece queries and gameplay locks. Visual components can bind to their nearest ancestor board; assign `board` explicitly for sibling components in multi-board scenes. Use `set_interaction_enabled(false)` for menus: internal animation/cascade completion will preserve the host pause. See [runtime integration](docs/RUNTIME_INTEGRATION.md#board-ownership) for ownership, pause semantics and regression commands.

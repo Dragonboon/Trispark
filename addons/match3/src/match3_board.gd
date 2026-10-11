@@ -1,10 +1,15 @@
 class_name Match3Board extends Node2D
+## Owns one grid and its runtime configuration. Host menus use
+## set_interaction_enabled(false); internal lock/unlock cannot override that pause.
+## Visual components resolve an explicit board, their nearest ancestor or one unique board.
 
 const GroupName: StringName = &"match3-board"
 const EventBridge = preload("res://addons/match3/src/events/match3_event_bridge.gd")
 
 ## Context-rich companion to the existing granular signals; sent before Resources react.
 signal event_emitted(event: Match3BoardEvent)
+## Host input permission changed; internal busy/lock state is independent.
+signal interaction_enabled_changed(enabled: bool)
 signal state_changed(from: BoardState, to: BoardState)
 signal swap_accepted(from: Match3GridCell, to: Match3GridCell)
 signal swap_rejected(from: Match3GridCell, to: Match3GridCell)
@@ -46,6 +51,7 @@ var fall_mover: Match3FallMover = Match3FallMover.new(self)
 var filler: Match3Filler = Match3Filler.new(self)
 var sequence_detector: Match3SequenceDetector = Match3SequenceDetector.new(self)
 var _event_bridge: RefCounted
+var _interaction_enabled: bool = true
 var sequence_consumer: Match3SequenceConsumer
 var shuffler: Match3Shuffler = Match3Shuffler.new(self)
 var piece_generator: Match3PieceGenerator = Match3PieceGenerator.new()
@@ -100,7 +106,8 @@ var is_locked: bool = false:
 
 func _enter_tree() -> void:
 	add_to_group(GroupName)
-	child_entered_tree.connect(on_child_entered_tree)
+	if not child_entered_tree.is_connected(on_child_entered_tree):
+		child_entered_tree.connect(on_child_entered_tree)
 
 
 func _ready() -> void:
@@ -154,20 +161,64 @@ func get_matches() -> Array[Match3Sequence]:
 	return sequence_detector.find_board_sequences()
 
 
+## Host permission combined with the board's current gameplay lock/state.
 func is_interaction_enabled() -> bool:
-	return not is_locked and state_is_wait_for_input()
+	return _interaction_enabled and not is_locked and state_is_wait_for_input()
 
 
+## Suspend player input while allowing current animations/cascades to finish.
+## Resuming does not release a gameplay lock held by an in-flight operation.
 func set_interaction_enabled(enabled: bool) -> void:
-	if enabled:
-		unlock()
+	if _interaction_enabled == enabled:
+		return
+	_interaction_enabled = enabled
+	if not enabled:
+		if is_instance_valid(current_selected_piece):
+			if current_selected_piece.drag_enabled:
+				current_selected_piece.disable_drag()
+				current_selected_piece.reset_drag_position()
+			current_selected_piece.z_index = current_selected_piece.original_z_index
+			current_selected_piece.z_as_relative = true
+		current_selected_piece = null
+		if line_connector != null and not line_connector.pieces_connected.is_empty():
+			line_connector.cancel_match()
+	if is_interaction_enabled():
+		unlock_all_pieces()
 	else:
-		lock()
+		lock_all_pieces()
+	interaction_enabled_changed.emit(enabled)
+
+
+## Logical ownership, independent of scene groups or matching grid coordinates.
+func owns_cell(cell: Match3GridCell) -> bool:
+	return is_instance_valid(cell) and get_cell(cell.column, cell.row) == cell
+
+
+func owns_piece(piece: Match3Piece) -> bool:
+	return is_instance_valid(piece) and not piece.is_queued_for_deletion() \
+		and owns_cell(piece.cell) and piece.cell.piece == piece
+
+
+## Shared component binding: explicit reference, nearest ancestor, unique fallback.
+## Returns null for an ambiguous scene; assign board explicitly in that case.
+static func resolve_for(component: Node, explicit_board: Match3Board = null) -> Match3Board:
+	if is_instance_valid(explicit_board):
+		return explicit_board
+	var ancestor: Node = component.get_parent()
+	while ancestor != null:
+		if ancestor is Match3Board:
+			return ancestor as Match3Board
+		ancestor = ancestor.get_parent()
+	if component.is_inside_tree():
+		var candidates: Array[Node] = component.get_tree().get_nodes_in_group(GroupName)
+		if candidates.size() == 1:
+			return candidates[0] as Match3Board
+	return null
 
 
 ## Pure query used by gameplay and highlighters; never queues special pieces.
 func can_swap_cells(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
-	if configuration == null or from_cell == null or to_cell == null:
+	if configuration == null or not owns_cell(from_cell) or not owns_cell(to_cell):
 		return false
 	if not from_cell.can_contain_piece or not to_cell.can_contain_piece:
 		return false
@@ -291,6 +342,8 @@ func draw_piece_on_cell(cell: Match3GridCell, piece: Match3Piece, replace: bool 
 			cell.remove_piece()
 			
 		cell.piece = piece
+		if not is_interaction_enabled():
+			piece.lock()
 		
 		if not piece.is_inside_tree():
 			add_child(piece)
@@ -369,7 +422,8 @@ func remove_matches_from_board() -> void:
 
 
 func shuffle() -> void:
-	if state_is_wait_for_input():
+	if is_interaction_enabled():
+		lock()
 		lock_all_pieces()
 		shuffle_started.emit()
 		
@@ -406,6 +460,9 @@ func lock_all_pieces() -> void:
 
 	
 func unlock_all_pieces() -> void:
+	if not is_interaction_enabled():
+		lock_all_pieces()
+		return
 	for piece: Match3Piece in pieces():
 		piece.unlock()
 
@@ -546,6 +603,8 @@ func fill_pieces() -> void:
 
 #region Swap
 func swap_pieces(from_piece: Match3Piece, to_piece: Match3Piece) -> void:
+	if not is_interaction_enabled() or not owns_piece(from_piece) or not owns_piece(to_piece):
+		return
 	if configuration.swap_mode_is_connect_line():
 		return
 		
@@ -553,6 +612,7 @@ func swap_pieces(from_piece: Match3Piece, to_piece: Match3Piece) -> void:
 	var to_cell: Match3GridCell = to_piece.cell
 	
 	if swap_movement_is_valid(from_cell, to_cell):
+		lock() # Reserve input before a custom animator can yield.
 		lock_all_pieces()
 		
 		if animator:
@@ -693,6 +753,8 @@ func on_line_connector_canceled_match(_pieces: Array[Match3Piece]) -> void:
 
 
 func on_selected_piece(piece: Match3Piece) -> void:
+	if not is_interaction_enabled() or not owns_piece(piece):
+		return
 	if current_selected_piece == null and piece.is_special() and piece.can_be_triggered:
 		add_special_piece_to_queue(piece)
 		travel_to(BoardState.SpecialConsume)
@@ -718,6 +780,8 @@ func on_selected_piece(piece: Match3Piece) -> void:
 		
 
 func on_piece_drag_started(piece: Match3Piece) -> void:
+	if not is_interaction_enabled() or not owns_piece(piece):
+		return
 	if current_selected_piece == null and piece.is_special() and piece.can_be_triggered:
 		add_special_piece_to_queue(piece)
 		travel_to(BoardState.SpecialConsume)
@@ -738,6 +802,8 @@ func on_piece_drag_started(piece: Match3Piece) -> void:
 
 
 func on_piece_drag_ended(piece: Match3Piece) -> void:
+	if not _interaction_enabled or not owns_piece(piece):
+		return
 	if configuration.swap_mode_is_connect_line():
 		if configuration.is_selection_drag_mode() or configuration.is_selection_slide_mode():
 			piece_drag_ended.emit(piece)

@@ -29,8 +29,10 @@ func _enter_tree() -> void:
 	
 	
 func _ready() -> void:
+	board = Match3Board.resolve_for(self, board)
 	if board == null:
-		board = get_tree().get_first_node_in_group(Match3Board.GroupName)
+		push_error("Match3: Assign a board explicitly when no unique owner can be resolved.")
+		return
 	
 	set_process(false)
 	set_process_unhandled_input(false)
@@ -59,7 +61,7 @@ func can_connect_more_pieces() -> bool:
 
 
 func add_piece(new_piece: Match3Piece) -> void:
-	if pieces_connected.has(new_piece):
+	if not board.owns_piece(new_piece) or pieces_connected.has(new_piece):
 		return
 		
 	new_piece.disable_detection_area()
@@ -182,7 +184,7 @@ func on_piece_detected(area: Area2D) -> void:
 	if can_connect_more_pieces():
 		var detected_piece: Match3Piece = area.get_parent() as Match3Piece
 		
-		if detected_piece and detected_piece.cell.is_adjacent_to(pieces_connected.back().cell, true) and detected_piece.match_with(origin_piece):
+		if board.owns_piece(detected_piece) and not pieces_connected.is_empty() and detected_piece.cell.is_adjacent_to(pieces_connected.back().cell, true) and detected_piece.match_with(origin_piece):
 			add_piece(detected_piece)
 			
 	else:

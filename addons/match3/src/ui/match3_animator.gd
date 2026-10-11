@@ -41,8 +41,10 @@ var animations: Dictionary = {
 }
 
 func _ready() -> void:
+	board = Match3Board.resolve_for(self, board)
 	if board == null:
-		board = get_tree().get_first_node_in_group(Match3Board.GroupName)
+		push_error("Match3: Assign a board explicitly when no unique owner can be resolved.")
+		return
 	
 	assert(board != null, "Match3Animator: This animator needs a Match3Board assigned")
 	

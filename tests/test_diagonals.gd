@@ -45,6 +45,10 @@ func _initialize() -> void:
 	assert(plan[0].to_cell.column != 2, "Blocked downward path should move diagonally.")
 	assert(board.get_cell(2, 1).has_piece(), "Planning must not mutate the board.")
 	print("Match3 diagonal/gravity regression: PASS")
+	clear_pieces()
+	for cell: Match3GridCell in board.grid_cells_flattened:
+		cell.free()
+	board.free()
 	quit()
 
 

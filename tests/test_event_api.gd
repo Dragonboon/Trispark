@@ -48,6 +48,8 @@ func _verify(board: Match3Board, receiver: Node, host: Node2D) -> void:
 	second.column = 2
 	second.row = 2
 
+	host.add_child(first)
+	host.add_child(second)
 	board.swap_rejected.emit(first, second)
 	assert(observed.size() == 1 and observed[0].type == Match3BoardEvent.Type.SWAP_REJECTED)
 	assert(observed[0].board == board and observed[0].cell == first and observed[0].other_cell == second)
@@ -77,5 +79,10 @@ func _verify(board: Match3Board, receiver: Node, host: Node2D) -> void:
 	assert(observed.back().sequence == seq)
 	assert(Match3Reaction.mask_for(Match3BoardEvent.Type.SWAP_REJECTED) == (1 << 10))
 	print("Match3 events and reactions regression: PASS")
+	piece.free()
+	for cell: Match3GridCell in seq_cells:
+		cell.remove_piece()
+		if cell.get_parent() == null:
+			cell.free()
 	host.free()
 	quit()

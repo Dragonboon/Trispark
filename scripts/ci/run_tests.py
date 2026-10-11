@@ -40,7 +40,9 @@ def main() -> int:
                            ("test_movement_api.gd", "Match3 movement API regression: PASS"),
                            ("test_event_api.gd", "Match3 events and reactions regression: PASS"),
                            ("test_isolated_integration.gd", "Match3 isolated integration regression: PASS"),
-                           ("test_fill_animation.gd", "Match3 fill animation regression: PASS")]:
+                           ("test_fill_animation.gd", "Match3 fill animation regression: PASS"),
+                           ("test_board_isolation.gd", "Match3 board isolation regression: PASS"),
+                           ("test_runtime_session.gd", "Match3 runtime session regression: PASS")]:
         if not run([args.godot, "--headless", "--path", root, "--script",
                     "res://tests/" + script], args.timeout, require_pass=True, pass_marker=marker):
             return 1

@@ -7,10 +7,13 @@ var current_highlighted_pieces: Array[Match3Piece] = []
 
 
 func _ready() -> void:
+	board = Match3Board.resolve_for(self, board)
 	if board == null:
-		board = get_tree().get_first_node_in_group(Match3Board.GroupName)
+		push_error("Match3: Assign a board explicitly when no unique owner can be resolved.")
+		return
 	
 	board.locked.connect(on_board_locked)
+	board.interaction_enabled_changed.connect(_on_interaction_enabled_changed)
 	board.selected_piece.connect(on_selected_piece)
 	board.unselected_piece.connect(on_unselected_piece)
 	board.piece_drag_started.connect(on_selected_piece)
@@ -64,3 +67,8 @@ func on_canceled_line_connector_match(_pieces: Array[Match3Piece]) -> void:
 	remove_highlight()
 
 #endregion
+
+
+func _on_interaction_enabled_changed(enabled: bool) -> void:
+	if not enabled:
+		remove_highlight()

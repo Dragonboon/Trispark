@@ -109,9 +109,6 @@ static func find_nodes_of_custom_class(node: Node, class_to_find: Variant) -> Ar
 ## Only works for native Godot Classes like Area3D, Camera2D, etc.
 ## Example NodeTraversal.first_node_of_type(self, Control.new())
 static func first_node_of_type(node: Node, type_to_find: Node):
-	if node.get_child_count() == 0:
-		return null
-
 	for child in node.get_children():
 		if child.is_class(type_to_find.get_class()):
 			type_to_find.free()
