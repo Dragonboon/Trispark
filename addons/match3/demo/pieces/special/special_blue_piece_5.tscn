@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b7nqv88v0b5jx"]
+
+[ext_resource type="Script" uid="uid://dgsqlvfprwtkg" path="res://addons/match3/demo/pieces/special/special_blue_piece_5.gd" id="1_2crua"]
+[ext_resource type="Texture2D" uid="uid://ctiniq36c2dh7" path="res://addons/match3/demo/assets/blue_gem.png" id="2_twbd7"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sm7co"]
+blend_mode = 1
+
+[node name="SpecialBlueGem5" type="Node2D"]
+script = ExtResource("1_2crua")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.925938, 0.216464, 0.182735, 1)
+material = SubResource("CanvasItemMaterial_sm7co")
+texture = ExtResource("2_twbd7")

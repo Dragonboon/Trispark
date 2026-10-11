@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dks25ocxl5476" path="res://addons/match3/src/match3_board.gd" id="1"]
+[ext_resource type="Resource" uid="uid://conr06fdjbas6" path="res://addons/match3/demo/demo_board_configuration.tres" id="2"]
+
+[node name="Match3Board" type="Node2D"]
+script = ExtResource("1")
+configuration = ExtResource("2")

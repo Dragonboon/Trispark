@@ -1,0 +1,2605 @@
+[gd_scene format=3 uid="uid://ccqn6wrassd5a"]
+
+[ext_resource type="Script" uid="uid://b1pnmsueocwm1" path="res://addons/match3/demo/demo.gd" id="1_dqalp"]
+[ext_resource type="Script" uid="uid://dks25ocxl5476" path="res://addons/match3/src/match3_board.gd" id="2_wxjdv"]
+[ext_resource type="Resource" uid="uid://conr06fdjbas6" path="res://addons/match3/demo/demo_board_configuration.tres" id="3_gr7lp"]
+[ext_resource type="Script" uid="uid://bqyrw4fyu1qxl" path="res://addons/match3/src/tools/match3_preview.gd" id="7_l3rww"]
+[ext_resource type="Texture2D" uid="uid://ctiniq36c2dh7" path="res://addons/match3/demo/assets/blue_gem.png" id="8_i3omk"]
+[ext_resource type="Texture2D" uid="uid://dchtf3oa72c7v" path="res://addons/match3/demo/assets/green_gem.png" id="9_yhgbj"]
+[ext_resource type="Texture2D" uid="uid://frw370xlyi52" path="res://addons/match3/demo/assets/purple_gem.png" id="10_rdkci"]
+[ext_resource type="Texture2D" uid="uid://bxh84kxgxf2df" path="res://addons/match3/demo/assets/yellow_gem.png" id="11_djm0a"]
+[ext_resource type="Script" uid="uid://l6w2l27wa40f" path="res://addons/match3/demo/demo_animator.gd" id="12_fov6k"]
+[ext_resource type="Texture2D" uid="uid://b6m4agye6vlqx" path="res://addons/match3/demo/assets/odd.png" id="12_sg7kf"]
+[ext_resource type="Script" uid="uid://dlx8vdyc6k3c" path="res://addons/match3/demo/demo_highlighter.gd" id="13_dlgcr"]
+[ext_resource type="Script" uid="uid://mnrey6b5yyar" path="res://addons/match3/src/pieces/line_connector.gd" id="14_ktadd"]
+
+[node name="Demo" type="Control" unique_id=764251912]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dqalp")
+
+[node name="Match3BoardUIConfiguration" type="Panel" parent="." unique_id=168797080]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Match3BoardUIConfiguration" unique_id=2015414527]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer" unique_id=99196201]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 20
+
+[node name="SelectionMode" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=12481550]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SelectionMode" unique_id=2098320602]
+layout_mode = 2
+text = "Selection mode"
+
+[node name="SelectionModeOptionButton" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SelectionMode" unique_id=7690741]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SelectionMode" unique_id=2132963807]
+layout_mode = 2
+text = "Swap mode"
+
+[node name="SwapModeOptionButton" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SelectionMode" unique_id=735732668]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FillMode" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=1832918723]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/FillMode" unique_id=1942211443]
+layout_mode = 2
+text = "Fill Mode"
+
+[node name="FillModeOptionButton" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/FillMode" unique_id=106554767]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=407659363]
+layout_mode = 2
+
+[node name="MinMaxMatch" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=2056869698]
+layout_mode = 2
+
+[node name="MinMatchLabel" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/MinMaxMatch" unique_id=1484215023]
+layout_mode = 2
+text = "Min Match"
+
+[node name="MinMatchSpinBox" type="SpinBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/MinMaxMatch" unique_id=39919716]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+min_value = 3.0
+value = 3.0
+alignment = 1
+
+[node name="MaxMatchLabel" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/MinMaxMatch" unique_id=149567393]
+layout_mode = 2
+text = "Max Match"
+
+[node name="MaxMatchSpinBox" type="SpinBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/MinMaxMatch" unique_id=718359001]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+min_value = 3.0
+value = 5.0
+alignment = 1
+
+[node name="SequenceShapes" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=1397343971]
+layout_mode = 2
+
+[node name="HorizontalShape" type="CheckBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SequenceShapes" unique_id=325743000]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Horizontal"
+
+[node name="VerticalShape" type="CheckBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SequenceShapes" unique_id=1487968528]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Vertical"
+
+[node name="TShape" type="CheckBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SequenceShapes" unique_id=1952816689]
+unique_name_in_owner = true
+layout_mode = 2
+text = "TShape"
+
+[node name="LShape" type="CheckBox" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/SequenceShapes" unique_id=1957265371]
+unique_name_in_owner = true
+layout_mode = 2
+text = "LShape"
+
+[node name="VSeparator2" type="VSeparator" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=1403975735]
+layout_mode = 2
+
+[node name="Animations" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=239250410]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=947345554]
+layout_mode = 2
+text = "Consume sequence animation flow"
+
+[node name="ConsumeSequenceAnimationFlow" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=1455601696]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+selected = 1
+item_count = 2
+popup/item_0/text = "Serial"
+popup/item_0/id = 0
+popup/item_1/text = "Parallel"
+popup/item_1/id = 1
+
+[node name="Label2" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=1000537896]
+layout_mode = 2
+text = "Fall animation flow"
+
+[node name="FallAnimationFlow" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=1842034751]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+item_count = 2
+popup/item_0/text = "Serial"
+popup/item_0/id = 0
+popup/item_1/text = "Parallel"
+popup/item_1/id = 1
+
+[node name="Label3" type="Label" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=1003237414]
+layout_mode = 2
+text = "Fill animation flow"
+
+[node name="FillAnimationFlow" type="OptionButton" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/Animations" unique_id=1608441095]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+item_count = 2
+popup/item_0/text = "Serial"
+popup/item_0/id = 0
+popup/item_1/text = "Parallel"
+popup/item_1/id = 1
+
+[node name="VSeparator3" type="VSeparator" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=878598063]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer" unique_id=808353786]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ShuffleButton" type="Button" parent="Match3BoardUIConfiguration/MarginContainer/HBoxContainer/VBoxContainer" unique_id=2095690327]
+unique_name_in_owner = true
+layout_mode = 2
+text = "🎲 Shuffle Board"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=187955405]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -81.5
+offset_right = 81.5
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/separation = 10
+
+[node name="StateLabel" type="Label" parent="HBoxContainer" unique_id=895400549]
+unique_name_in_owner = true
+layout_mode = 2
+text = "STATE"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer" unique_id=1657587939]
+layout_mode = 2
+
+[node name="BoardInformation" type="Label" parent="HBoxContainer" unique_id=1934617768]
+unique_name_in_owner = true
+layout_mode = 2
+text = "8 columns x 7 rows | 56 pieces"
+
+[node name="Demo" type="Node2D" parent="." unique_id=354763174]
+position = Vector2(236, 58)
+
+[node name="Match3Board" type="Node2D" parent="Demo" unique_id=1866024329 node_paths=PackedStringArray("animator", "highlighter", "line_connector")]
+unique_name_in_owner = true
+script = ExtResource("2_wxjdv")
+configuration = ExtResource("3_gr7lp")
+animator = NodePath("Match3Animator")
+highlighter = NodePath("Match3Highlighter")
+line_connector = NodePath("Match3LineConnector")
+
+[node name="Match3Animator" type="Node" parent="Demo/Match3Board" unique_id=1971384084 node_paths=PackedStringArray("board")]
+script = ExtResource("12_fov6k")
+board = NodePath("..")
+
+[node name="Match3Highlighter" type="Node" parent="Demo/Match3Board" unique_id=371158179 node_paths=PackedStringArray("board")]
+script = ExtResource("13_dlgcr")
+board = NodePath("..")
+
+[node name="Match3LineConnector" type="Line2D" parent="Demo/Match3Board" unique_id=1143630314 node_paths=PackedStringArray("board")]
+width = 1.5
+default_color = Color(1, 1, 0.443137, 1)
+script = ExtResource("14_ktadd")
+board = NodePath("..")
+
+[node name="Match3Preview" type="Node2D" parent="Demo/Match3Board" unique_id=1138303636 node_paths=PackedStringArray("board")]
+script = ExtResource("7_l3rww")
+board = NodePath("..")
+preview_pieces = Array[Texture2D]([ExtResource("8_i3omk"), ExtResource("9_yhgbj"), ExtResource("10_rdkci"), ExtResource("11_djm0a")])
+preview_cell_texture = ExtResource("12_sg7kf")
+position_font_size = 16
+
+[node name="Cell(0,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=367700645]
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=910333204]
+z_index = 1
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(0,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=298367208]
+z_index = 2
+theme_override_font_sizes/font_size = 16
+text = "(0,0)"
+
+[node name="Cell(0,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1141971588]
+position = Vector2(0, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=202324759]
+z_index = 1
+position = Vector2(0, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(0,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=834369060]
+z_index = 2
+offset_top = 48.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(0,1)"
+
+[node name="Cell(0,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=284810707]
+position = Vector2(0, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=983785155]
+z_index = 1
+position = Vector2(0, 96)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(0,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2076121025]
+z_index = 2
+offset_top = 96.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(0,2)"
+
+[node name="Cell(0,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=837865277]
+position = Vector2(0, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=926370454]
+z_index = 1
+position = Vector2(0, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(0,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1614802829]
+z_index = 2
+offset_top = 144.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(0,3)"
+
+[node name="Cell(0,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1606052079]
+position = Vector2(0, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1147477085]
+z_index = 1
+position = Vector2(0, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(0,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1298769517]
+z_index = 2
+offset_top = 192.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(0,4)"
+
+[node name="Cell(0,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1111862009]
+position = Vector2(0, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=768193947]
+z_index = 1
+position = Vector2(0, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(0,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1676878883]
+z_index = 2
+offset_top = 240.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(0,5)"
+
+[node name="Cell(0,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1150943188]
+position = Vector2(0, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=375417714]
+z_index = 1
+position = Vector2(0, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(0,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=884789123]
+z_index = 2
+offset_top = 288.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(0,6)"
+
+[node name="Cell(0,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=884046864]
+position = Vector2(0, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(0,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2047578423]
+z_index = 1
+position = Vector2(0, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(0,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1763762049]
+z_index = 2
+offset_top = 336.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(0,7)"
+
+[node name="Cell(1,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1023886643]
+position = Vector2(48, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=405869272]
+z_index = 1
+position = Vector2(48, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(1,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1266987338]
+z_index = 2
+offset_left = 48.0
+offset_right = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(1,0)"
+
+[node name="Cell(1,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=645932654]
+position = Vector2(48, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=954219794]
+z_index = 1
+position = Vector2(48, 48)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(1,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1814318089]
+z_index = 2
+offset_left = 48.0
+offset_top = 48.0
+offset_right = 48.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(1,1)"
+
+[node name="Cell(1,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=700142069]
+position = Vector2(48, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1912180189]
+z_index = 1
+position = Vector2(48, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(1,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=713378126]
+z_index = 2
+offset_left = 48.0
+offset_top = 96.0
+offset_right = 48.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(1,2)"
+
+[node name="Cell(1,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1354728675]
+position = Vector2(48, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1695614684]
+z_index = 1
+position = Vector2(48, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(1,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1279885851]
+z_index = 2
+offset_left = 48.0
+offset_top = 144.0
+offset_right = 48.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(1,3)"
+
+[node name="Cell(1,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=116846871]
+position = Vector2(48, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2008038845]
+z_index = 1
+position = Vector2(48, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(1,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1674750115]
+z_index = 2
+offset_left = 48.0
+offset_top = 192.0
+offset_right = 48.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(1,4)"
+
+[node name="Cell(1,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1333610948]
+position = Vector2(48, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=21017900]
+z_index = 1
+position = Vector2(48, 240)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(1,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=765968636]
+z_index = 2
+offset_left = 48.0
+offset_top = 240.0
+offset_right = 48.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(1,5)"
+
+[node name="Cell(1,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=326727406]
+position = Vector2(48, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1736260021]
+z_index = 1
+position = Vector2(48, 288)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(1,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2079437386]
+z_index = 2
+offset_left = 48.0
+offset_top = 288.0
+offset_right = 48.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(1,6)"
+
+[node name="Cell(1,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1922090443]
+position = Vector2(48, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(1,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1048015752]
+z_index = 1
+position = Vector2(48, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(1,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1867842320]
+z_index = 2
+offset_left = 48.0
+offset_top = 336.0
+offset_right = 48.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(1,7)"
+
+[node name="Cell(2,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1582054872]
+position = Vector2(96, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1357645584]
+z_index = 1
+position = Vector2(96, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(2,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=735030118]
+z_index = 2
+offset_left = 96.0
+offset_right = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(2,0)"
+
+[node name="Cell(2,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=614803527]
+position = Vector2(96, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1177402862]
+z_index = 1
+position = Vector2(96, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(2,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1045861795]
+z_index = 2
+offset_left = 96.0
+offset_top = 48.0
+offset_right = 96.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(2,1)"
+
+[node name="Cell(2,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1663311877]
+position = Vector2(96, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1905933844]
+z_index = 1
+position = Vector2(96, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(2,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1005170956]
+z_index = 2
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 96.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(2,2)"
+
+[node name="Cell(2,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=176488645]
+position = Vector2(96, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1650803280]
+z_index = 1
+position = Vector2(96, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(2,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=668350134]
+z_index = 2
+offset_left = 96.0
+offset_top = 144.0
+offset_right = 96.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(2,3)"
+
+[node name="Cell(2,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=30996092]
+position = Vector2(96, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1790777706]
+z_index = 1
+position = Vector2(96, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(2,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1115260167]
+z_index = 2
+offset_left = 96.0
+offset_top = 192.0
+offset_right = 96.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(2,4)"
+
+[node name="Cell(2,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=881604262]
+position = Vector2(96, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2071043930]
+z_index = 1
+position = Vector2(96, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(2,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1070904016]
+z_index = 2
+offset_left = 96.0
+offset_top = 240.0
+offset_right = 96.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(2,5)"
+
+[node name="Cell(2,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=751147589]
+position = Vector2(96, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2011679739]
+z_index = 1
+position = Vector2(96, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(2,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1447363244]
+z_index = 2
+offset_left = 96.0
+offset_top = 288.0
+offset_right = 96.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(2,6)"
+
+[node name="Cell(2,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=881578704]
+position = Vector2(96, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(2,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=389510687]
+z_index = 1
+position = Vector2(96, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(2,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1085597284]
+z_index = 2
+offset_left = 96.0
+offset_top = 336.0
+offset_right = 96.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(2,7)"
+
+[node name="Cell(3,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1916998761]
+position = Vector2(144, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1763648306]
+z_index = 1
+position = Vector2(144, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(3,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1932191552]
+z_index = 2
+offset_left = 144.0
+offset_right = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(3,0)"
+
+[node name="Cell(3,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1261821680]
+position = Vector2(144, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1009571551]
+z_index = 1
+position = Vector2(144, 48)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(3,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=275409703]
+z_index = 2
+offset_left = 144.0
+offset_top = 48.0
+offset_right = 144.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(3,1)"
+
+[node name="Cell(3,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=986571418]
+position = Vector2(144, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=263141655]
+z_index = 1
+position = Vector2(144, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(3,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1122636176]
+z_index = 2
+offset_left = 144.0
+offset_top = 96.0
+offset_right = 144.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(3,2)"
+
+[node name="Cell(3,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=625001685]
+position = Vector2(144, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1816514778]
+z_index = 1
+position = Vector2(144, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(3,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=940885640]
+z_index = 2
+offset_left = 144.0
+offset_top = 144.0
+offset_right = 144.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(3,3)"
+
+[node name="Cell(3,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=76056859]
+position = Vector2(144, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=639054138]
+z_index = 1
+position = Vector2(144, 192)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(3,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2123572075]
+z_index = 2
+offset_left = 144.0
+offset_top = 192.0
+offset_right = 144.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(3,4)"
+
+[node name="Cell(3,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1720293001]
+position = Vector2(144, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1564539992]
+z_index = 1
+position = Vector2(144, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(3,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1346902576]
+z_index = 2
+offset_left = 144.0
+offset_top = 240.0
+offset_right = 144.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(3,5)"
+
+[node name="Cell(3,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=431703120]
+position = Vector2(144, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1266657405]
+z_index = 1
+position = Vector2(144, 288)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(3,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=351677539]
+z_index = 2
+offset_left = 144.0
+offset_top = 288.0
+offset_right = 144.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(3,6)"
+
+[node name="Cell(3,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1019707921]
+position = Vector2(144, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(3,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1732975747]
+z_index = 1
+position = Vector2(144, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(3,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=738131979]
+z_index = 2
+offset_left = 144.0
+offset_top = 336.0
+offset_right = 144.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(3,7)"
+
+[node name="Cell(4,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1445687312]
+position = Vector2(192, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1759713454]
+z_index = 1
+position = Vector2(192, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(4,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1014123362]
+z_index = 2
+offset_left = 192.0
+offset_right = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(4,0)"
+
+[node name="Cell(4,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=590445470]
+position = Vector2(192, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=665191457]
+z_index = 1
+position = Vector2(192, 48)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(4,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1538422980]
+z_index = 2
+offset_left = 192.0
+offset_top = 48.0
+offset_right = 192.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(4,1)"
+
+[node name="Cell(4,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1183877222]
+position = Vector2(192, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1595826543]
+z_index = 1
+position = Vector2(192, 96)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(4,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2005465519]
+z_index = 2
+offset_left = 192.0
+offset_top = 96.0
+offset_right = 192.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(4,2)"
+
+[node name="Cell(4,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=421514129]
+position = Vector2(192, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1562883655]
+z_index = 1
+position = Vector2(192, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(4,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=433733251]
+z_index = 2
+offset_left = 192.0
+offset_top = 144.0
+offset_right = 192.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(4,3)"
+
+[node name="Cell(4,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=486129459]
+position = Vector2(192, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1652804632]
+z_index = 1
+position = Vector2(192, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(4,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=40615118]
+z_index = 2
+offset_left = 192.0
+offset_top = 192.0
+offset_right = 192.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(4,4)"
+
+[node name="Cell(4,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=216145007]
+position = Vector2(192, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=710022729]
+z_index = 1
+position = Vector2(192, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(4,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=361763451]
+z_index = 2
+offset_left = 192.0
+offset_top = 240.0
+offset_right = 192.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(4,5)"
+
+[node name="Cell(4,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1855774540]
+position = Vector2(192, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=589695215]
+z_index = 1
+position = Vector2(192, 288)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(4,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1352655610]
+z_index = 2
+offset_left = 192.0
+offset_top = 288.0
+offset_right = 192.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(4,6)"
+
+[node name="Cell(4,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=22747556]
+position = Vector2(192, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(4,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1838451364]
+z_index = 1
+position = Vector2(192, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(4,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1656834220]
+z_index = 2
+offset_left = 192.0
+offset_top = 336.0
+offset_right = 192.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(4,7)"
+
+[node name="Cell(5,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=147834506]
+position = Vector2(240, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1407737380]
+z_index = 1
+position = Vector2(240, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(5,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=467110932]
+z_index = 2
+offset_left = 240.0
+offset_right = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(5,0)"
+
+[node name="Cell(5,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=759501243]
+position = Vector2(240, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=408457931]
+z_index = 1
+position = Vector2(240, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(5,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=919453354]
+z_index = 2
+offset_left = 240.0
+offset_top = 48.0
+offset_right = 240.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(5,1)"
+
+[node name="Cell(5,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1022672700]
+position = Vector2(240, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1282346286]
+z_index = 1
+position = Vector2(240, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(5,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2073675563]
+z_index = 2
+offset_left = 240.0
+offset_top = 96.0
+offset_right = 240.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(5,2)"
+
+[node name="Cell(5,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1495345890]
+position = Vector2(240, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=913830061]
+z_index = 1
+position = Vector2(240, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(5,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=734646426]
+z_index = 2
+offset_left = 240.0
+offset_top = 144.0
+offset_right = 240.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(5,3)"
+
+[node name="Cell(5,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2045610336]
+position = Vector2(240, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1648728870]
+z_index = 1
+position = Vector2(240, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(5,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1369964175]
+z_index = 2
+offset_left = 240.0
+offset_top = 192.0
+offset_right = 240.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(5,4)"
+
+[node name="Cell(5,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=791849390]
+position = Vector2(240, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=663095267]
+z_index = 1
+position = Vector2(240, 240)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(5,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1274429783]
+z_index = 2
+offset_left = 240.0
+offset_top = 240.0
+offset_right = 240.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(5,5)"
+
+[node name="Cell(5,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=725664733]
+position = Vector2(240, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=542879633]
+z_index = 1
+position = Vector2(240, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(5,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1206679021]
+z_index = 2
+offset_left = 240.0
+offset_top = 288.0
+offset_right = 240.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(5,6)"
+
+[node name="Cell(5,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=819350875]
+position = Vector2(240, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(5,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1013128197]
+z_index = 1
+position = Vector2(240, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(5,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1568655927]
+z_index = 2
+offset_left = 240.0
+offset_top = 336.0
+offset_right = 240.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(5,7)"
+
+[node name="Cell(6,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=27627473]
+position = Vector2(288, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1466299496]
+z_index = 1
+position = Vector2(288, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(6,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=222548828]
+z_index = 2
+offset_left = 288.0
+offset_right = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(6,0)"
+
+[node name="Cell(6,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=716501558]
+position = Vector2(288, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=322372933]
+z_index = 1
+position = Vector2(288, 48)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(6,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=344036176]
+z_index = 2
+offset_left = 288.0
+offset_top = 48.0
+offset_right = 288.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(6,1)"
+
+[node name="Cell(6,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=272345297]
+position = Vector2(288, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=360672212]
+z_index = 1
+position = Vector2(288, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(6,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=430736493]
+z_index = 2
+offset_left = 288.0
+offset_top = 96.0
+offset_right = 288.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(6,2)"
+
+[node name="Cell(6,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1582899049]
+position = Vector2(288, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1097125246]
+z_index = 1
+position = Vector2(288, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(6,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=10863073]
+z_index = 2
+offset_left = 288.0
+offset_top = 144.0
+offset_right = 288.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(6,3)"
+
+[node name="Cell(6,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1882400690]
+position = Vector2(288, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2107312969]
+z_index = 1
+position = Vector2(288, 192)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(6,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=918528988]
+z_index = 2
+offset_left = 288.0
+offset_top = 192.0
+offset_right = 288.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(6,4)"
+
+[node name="Cell(6,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=556782868]
+position = Vector2(288, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=622518687]
+z_index = 1
+position = Vector2(288, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(6,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1915149024]
+z_index = 2
+offset_left = 288.0
+offset_top = 240.0
+offset_right = 288.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(6,5)"
+
+[node name="Cell(6,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=154568765]
+position = Vector2(288, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=828571263]
+z_index = 1
+position = Vector2(288, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(6,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=312938680]
+z_index = 2
+offset_left = 288.0
+offset_top = 288.0
+offset_right = 288.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(6,6)"
+
+[node name="Cell(6,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=251819344]
+position = Vector2(288, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(6,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1042304728]
+z_index = 1
+position = Vector2(288, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(6,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=846768179]
+z_index = 2
+offset_left = 288.0
+offset_top = 336.0
+offset_right = 288.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(6,7)"
+
+[node name="Cell(7,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=223826636]
+position = Vector2(336, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1805569660]
+z_index = 1
+position = Vector2(336, 0)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(7,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1772345977]
+z_index = 2
+offset_left = 336.0
+offset_right = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(7,0)"
+
+[node name="Cell(7,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2118759365]
+position = Vector2(336, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=204170772]
+z_index = 1
+position = Vector2(336, 48)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(7,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1431471799]
+z_index = 2
+offset_left = 336.0
+offset_top = 48.0
+offset_right = 336.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(7,1)"
+
+[node name="Cell(7,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2044859776]
+position = Vector2(336, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1354420361]
+z_index = 1
+position = Vector2(336, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(7,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=484409791]
+z_index = 2
+offset_left = 336.0
+offset_top = 96.0
+offset_right = 336.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(7,2)"
+
+[node name="Cell(7,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=314436147]
+position = Vector2(336, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=616332681]
+z_index = 1
+position = Vector2(336, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(7,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1835712177]
+z_index = 2
+offset_left = 336.0
+offset_top = 144.0
+offset_right = 336.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(7,3)"
+
+[node name="Cell(7,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1770347094]
+position = Vector2(336, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1279969121]
+z_index = 1
+position = Vector2(336, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(7,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1779020942]
+z_index = 2
+offset_left = 336.0
+offset_top = 192.0
+offset_right = 336.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(7,4)"
+
+[node name="Cell(7,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1877405448]
+position = Vector2(336, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2026133050]
+z_index = 1
+position = Vector2(336, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(7,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2006809790]
+z_index = 2
+offset_left = 336.0
+offset_top = 240.0
+offset_right = 336.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(7,5)"
+
+[node name="Cell(7,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1314990629]
+position = Vector2(336, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1714173237]
+z_index = 1
+position = Vector2(336, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(7,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=628040391]
+z_index = 2
+offset_left = 336.0
+offset_top = 288.0
+offset_right = 336.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(7,6)"
+
+[node name="Cell(7,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=157266501]
+position = Vector2(336, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(7,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1546331893]
+z_index = 1
+position = Vector2(336, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(7,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=708913890]
+z_index = 2
+offset_left = 336.0
+offset_top = 336.0
+offset_right = 336.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(7,7)"
+
+[node name="Cell(8,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1867002703]
+position = Vector2(384, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=443137061]
+z_index = 1
+position = Vector2(384, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(8,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1582461167]
+z_index = 2
+offset_left = 384.0
+offset_right = 384.0
+theme_override_font_sizes/font_size = 16
+text = "(8,0)"
+
+[node name="Cell(8,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1539875538]
+position = Vector2(384, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=87405620]
+z_index = 1
+position = Vector2(384, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(8,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1207415263]
+z_index = 2
+offset_left = 384.0
+offset_top = 48.0
+offset_right = 384.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(8,1)"
+
+[node name="Cell(8,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1870764335]
+position = Vector2(384, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1223778136]
+z_index = 1
+position = Vector2(384, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(8,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=751918663]
+z_index = 2
+offset_left = 384.0
+offset_top = 96.0
+offset_right = 384.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(8,2)"
+
+[node name="Cell(8,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=387657817]
+position = Vector2(384, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=879447991]
+z_index = 1
+position = Vector2(384, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(8,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1993474106]
+z_index = 2
+offset_left = 384.0
+offset_top = 144.0
+offset_right = 384.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(8,3)"
+
+[node name="Cell(8,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=204194367]
+position = Vector2(384, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1477638974]
+z_index = 1
+position = Vector2(384, 192)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(8,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=304624916]
+z_index = 2
+offset_left = 384.0
+offset_top = 192.0
+offset_right = 384.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(8,4)"
+
+[node name="Cell(8,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=193891748]
+position = Vector2(384, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1744948969]
+z_index = 1
+position = Vector2(384, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(8,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=815741421]
+z_index = 2
+offset_left = 384.0
+offset_top = 240.0
+offset_right = 384.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(8,5)"
+
+[node name="Cell(8,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=406017264]
+position = Vector2(384, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=899661675]
+z_index = 1
+position = Vector2(384, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(8,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2106137703]
+z_index = 2
+offset_left = 384.0
+offset_top = 288.0
+offset_right = 384.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(8,6)"
+
+[node name="Cell(8,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=899057148]
+position = Vector2(384, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(8,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1590122922]
+z_index = 1
+position = Vector2(384, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(8,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=40740696]
+z_index = 2
+offset_left = 384.0
+offset_top = 336.0
+offset_right = 384.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(8,7)"
+
+[node name="Cell(9,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=304382732]
+position = Vector2(432, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=423282201]
+z_index = 1
+position = Vector2(432, 0)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(9,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=768142051]
+z_index = 2
+offset_left = 432.0
+offset_right = 432.0
+theme_override_font_sizes/font_size = 16
+text = "(9,0)"
+
+[node name="Cell(9,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1055938828]
+position = Vector2(432, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1951479495]
+z_index = 1
+position = Vector2(432, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(9,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1088356919]
+z_index = 2
+offset_left = 432.0
+offset_top = 48.0
+offset_right = 432.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(9,1)"
+
+[node name="Cell(9,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1245856207]
+position = Vector2(432, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=53478181]
+z_index = 1
+position = Vector2(432, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(9,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=791442031]
+z_index = 2
+offset_left = 432.0
+offset_top = 96.0
+offset_right = 432.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(9,2)"
+
+[node name="Cell(9,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=94214574]
+position = Vector2(432, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=14661534]
+z_index = 1
+position = Vector2(432, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(9,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1076955297]
+z_index = 2
+offset_left = 432.0
+offset_top = 144.0
+offset_right = 432.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(9,3)"
+
+[node name="Cell(9,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=749878082]
+position = Vector2(432, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=503367108]
+z_index = 1
+position = Vector2(432, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(9,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=749055186]
+z_index = 2
+offset_left = 432.0
+offset_top = 192.0
+offset_right = 432.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(9,4)"
+
+[node name="Cell(9,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2007030967]
+position = Vector2(432, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2022100194]
+z_index = 1
+position = Vector2(432, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(9,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=742368182]
+z_index = 2
+offset_left = 432.0
+offset_top = 240.0
+offset_right = 432.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(9,5)"
+
+[node name="Cell(9,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=79814086]
+position = Vector2(432, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=231373329]
+z_index = 1
+position = Vector2(432, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(9,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2089551323]
+z_index = 2
+offset_left = 432.0
+offset_top = 288.0
+offset_right = 432.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(9,6)"
+
+[node name="Cell(9,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1436821177]
+position = Vector2(432, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(9,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1202605557]
+z_index = 1
+position = Vector2(432, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(9,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1056358162]
+z_index = 2
+offset_left = 432.0
+offset_top = 336.0
+offset_right = 432.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(9,7)"
+
+[node name="Cell(10,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1335567939]
+position = Vector2(480, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1773669769]
+z_index = 1
+position = Vector2(480, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(10,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=905576772]
+z_index = 2
+offset_left = 480.0
+offset_right = 480.0
+theme_override_font_sizes/font_size = 16
+text = "(10,0)"
+
+[node name="Cell(10,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1627796951]
+position = Vector2(480, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1607904893]
+z_index = 1
+position = Vector2(480, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(10,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=284965761]
+z_index = 2
+offset_left = 480.0
+offset_top = 48.0
+offset_right = 480.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(10,1)"
+
+[node name="Cell(10,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1506627086]
+position = Vector2(480, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=921911448]
+z_index = 1
+position = Vector2(480, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(10,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=417292012]
+z_index = 2
+offset_left = 480.0
+offset_top = 96.0
+offset_right = 480.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(10,2)"
+
+[node name="Cell(10,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=168163980]
+position = Vector2(480, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1925267745]
+z_index = 1
+position = Vector2(480, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(10,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1816938759]
+z_index = 2
+offset_left = 480.0
+offset_top = 144.0
+offset_right = 480.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(10,3)"
+
+[node name="Cell(10,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=865781135]
+position = Vector2(480, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1752324920]
+z_index = 1
+position = Vector2(480, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(10,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=694291844]
+z_index = 2
+offset_left = 480.0
+offset_top = 192.0
+offset_right = 480.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(10,4)"
+
+[node name="Cell(10,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1894699714]
+position = Vector2(480, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1341318234]
+z_index = 1
+position = Vector2(480, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(10,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=416770810]
+z_index = 2
+offset_left = 480.0
+offset_top = 240.0
+offset_right = 480.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(10,5)"
+
+[node name="Cell(10,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1769342652]
+position = Vector2(480, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1412922416]
+z_index = 1
+position = Vector2(480, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(10,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=882225559]
+z_index = 2
+offset_left = 480.0
+offset_top = 288.0
+offset_right = 480.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(10,6)"
+
+[node name="Cell(10,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1496168398]
+position = Vector2(480, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(10,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1502598583]
+z_index = 1
+position = Vector2(480, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(10,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1613324631]
+z_index = 2
+offset_left = 480.0
+offset_top = 336.0
+offset_right = 480.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(10,7)"
+
+[node name="Cell(11,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1463110916]
+position = Vector2(528, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2038905617]
+z_index = 1
+position = Vector2(528, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(11,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1319430179]
+z_index = 2
+offset_left = 528.0
+offset_right = 528.0
+theme_override_font_sizes/font_size = 16
+text = "(11,0)"
+
+[node name="Cell(11,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1475974990]
+position = Vector2(528, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2133377947]
+z_index = 1
+position = Vector2(528, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(11,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=618883639]
+z_index = 2
+offset_left = 528.0
+offset_top = 48.0
+offset_right = 528.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(11,1)"
+
+[node name="Cell(11,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1059243452]
+position = Vector2(528, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=86359732]
+z_index = 1
+position = Vector2(528, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(11,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2056035929]
+z_index = 2
+offset_left = 528.0
+offset_top = 96.0
+offset_right = 528.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(11,2)"
+
+[node name="Cell(11,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=271613511]
+position = Vector2(528, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=552713693]
+z_index = 1
+position = Vector2(528, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(11,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=337439599]
+z_index = 2
+offset_left = 528.0
+offset_top = 144.0
+offset_right = 528.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(11,3)"
+
+[node name="Cell(11,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1682217738]
+position = Vector2(528, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=985133064]
+z_index = 1
+position = Vector2(528, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(11,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=101348230]
+z_index = 2
+offset_left = 528.0
+offset_top = 192.0
+offset_right = 528.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(11,4)"
+
+[node name="Cell(11,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=624753627]
+position = Vector2(528, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1143326791]
+z_index = 1
+position = Vector2(528, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(11,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=972364199]
+z_index = 2
+offset_left = 528.0
+offset_top = 240.0
+offset_right = 528.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(11,5)"
+
+[node name="Cell(11,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=748725995]
+position = Vector2(528, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=238439283]
+z_index = 1
+position = Vector2(528, 288)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(11,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=302686689]
+z_index = 2
+offset_left = 528.0
+offset_top = 288.0
+offset_right = 528.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(11,6)"
+
+[node name="Cell(11,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1711917050]
+position = Vector2(528, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(11,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=871149479]
+z_index = 1
+position = Vector2(528, 336)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(11,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2005352180]
+z_index = 2
+offset_left = 528.0
+offset_top = 336.0
+offset_right = 528.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(11,7)"
+
+[node name="Cell(12,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2126008370]
+position = Vector2(576, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1783429928]
+z_index = 1
+position = Vector2(576, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(12,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1808330979]
+z_index = 2
+offset_left = 576.0
+offset_right = 576.0
+theme_override_font_sizes/font_size = 16
+text = "(12,0)"
+
+[node name="Cell(12,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1187392376]
+position = Vector2(576, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1823584267]
+z_index = 1
+position = Vector2(576, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(12,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=734944136]
+z_index = 2
+offset_left = 576.0
+offset_top = 48.0
+offset_right = 576.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(12,1)"
+
+[node name="Cell(12,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1408389733]
+position = Vector2(576, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2028430506]
+z_index = 1
+position = Vector2(576, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(12,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=761687606]
+z_index = 2
+offset_left = 576.0
+offset_top = 96.0
+offset_right = 576.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(12,2)"
+
+[node name="Cell(12,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=309809404]
+position = Vector2(576, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=692642029]
+z_index = 1
+position = Vector2(576, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(12,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1440691921]
+z_index = 2
+offset_left = 576.0
+offset_top = 144.0
+offset_right = 576.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(12,3)"
+
+[node name="Cell(12,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=610872985]
+position = Vector2(576, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1543507485]
+z_index = 1
+position = Vector2(576, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(12,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1335427810]
+z_index = 2
+offset_left = 576.0
+offset_top = 192.0
+offset_right = 576.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(12,4)"
+
+[node name="Cell(12,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1907894130]
+position = Vector2(576, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=222530724]
+z_index = 1
+position = Vector2(576, 240)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(12,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1630729032]
+z_index = 2
+offset_left = 576.0
+offset_top = 240.0
+offset_right = 576.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(12,5)"
+
+[node name="Cell(12,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=549674808]
+position = Vector2(576, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1022273729]
+z_index = 1
+position = Vector2(576, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(12,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1194959025]
+z_index = 2
+offset_left = 576.0
+offset_top = 288.0
+offset_right = 576.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(12,6)"
+
+[node name="Cell(12,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=861398166]
+position = Vector2(576, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(12,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=891212412]
+z_index = 1
+position = Vector2(576, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(12,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1511282890]
+z_index = 2
+offset_left = 576.0
+offset_top = 336.0
+offset_right = 576.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(12,7)"
+
+[node name="Cell(13,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2121638929]
+position = Vector2(624, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1028789767]
+z_index = 1
+position = Vector2(624, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=480087614]
+z_index = 2
+offset_left = 624.0
+offset_right = 624.0
+theme_override_font_sizes/font_size = 16
+text = "(13,0)"
+
+[node name="Cell(13,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1614670872]
+position = Vector2(624, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=720458774]
+z_index = 1
+position = Vector2(624, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(13,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=172311863]
+z_index = 2
+offset_left = 624.0
+offset_top = 48.0
+offset_right = 624.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(13,1)"
+
+[node name="Cell(13,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1163898503]
+position = Vector2(624, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1049008765]
+z_index = 1
+position = Vector2(624, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2112868088]
+z_index = 2
+offset_left = 624.0
+offset_top = 96.0
+offset_right = 624.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(13,2)"
+
+[node name="Cell(13,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2062144967]
+position = Vector2(624, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=78576956]
+z_index = 1
+position = Vector2(624, 144)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(13,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1834715899]
+z_index = 2
+offset_left = 624.0
+offset_top = 144.0
+offset_right = 624.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(13,3)"
+
+[node name="Cell(13,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1179913969]
+position = Vector2(624, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=192882845]
+z_index = 1
+position = Vector2(624, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1362554311]
+z_index = 2
+offset_left = 624.0
+offset_top = 192.0
+offset_right = 624.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(13,4)"
+
+[node name="Cell(13,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1903980107]
+position = Vector2(624, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=621530022]
+z_index = 1
+position = Vector2(624, 240)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1621119937]
+z_index = 2
+offset_left = 624.0
+offset_top = 240.0
+offset_right = 624.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(13,5)"
+
+[node name="Cell(13,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1618740778]
+position = Vector2(624, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=740525734]
+z_index = 1
+position = Vector2(624, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=238128337]
+z_index = 2
+offset_left = 624.0
+offset_top = 288.0
+offset_right = 624.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(13,6)"
+
+[node name="Cell(13,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1959908159]
+position = Vector2(624, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(13,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=972607964]
+z_index = 1
+position = Vector2(624, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(13,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=823183274]
+z_index = 2
+offset_left = 624.0
+offset_top = 336.0
+offset_right = 624.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(13,7)"
+
+[node name="Cell(14,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=689359802]
+position = Vector2(672, 0)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,0)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=685315003]
+z_index = 1
+position = Vector2(672, 0)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(14,0)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1250813386]
+z_index = 2
+offset_left = 672.0
+offset_right = 672.0
+theme_override_font_sizes/font_size = 16
+text = "(14,0)"
+
+[node name="Cell(14,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=93839247]
+position = Vector2(672, 48)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,1)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=731419460]
+z_index = 1
+position = Vector2(672, 48)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(14,1)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=143422487]
+z_index = 2
+offset_left = 672.0
+offset_top = 48.0
+offset_right = 672.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 16
+text = "(14,1)"
+
+[node name="Cell(14,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1915328945]
+position = Vector2(672, 96)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,2)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=318907491]
+z_index = 1
+position = Vector2(672, 96)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(14,2)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2094664499]
+z_index = 2
+offset_left = 672.0
+offset_top = 96.0
+offset_right = 672.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 16
+text = "(14,2)"
+
+[node name="Cell(14,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=353113739]
+position = Vector2(672, 144)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,3)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1349042427]
+z_index = 1
+position = Vector2(672, 144)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(14,3)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=747420581]
+z_index = 2
+offset_left = 672.0
+offset_top = 144.0
+offset_right = 672.0
+offset_bottom = 144.0
+theme_override_font_sizes/font_size = 16
+text = "(14,3)"
+
+[node name="Cell(14,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1732912147]
+position = Vector2(672, 192)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,4)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2001906432]
+z_index = 1
+position = Vector2(672, 192)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("11_djm0a")
+
+[node name="Label(14,4)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=2133997084]
+z_index = 2
+offset_left = 672.0
+offset_top = 192.0
+offset_right = 672.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 16
+text = "(14,4)"
+
+[node name="Cell(14,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=695279426]
+position = Vector2(672, 240)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,5)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1906880650]
+z_index = 1
+position = Vector2(672, 240)
+scale = Vector2(0.63750005, 0.8)
+texture = ExtResource("10_rdkci")
+
+[node name="Label(14,5)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=710374473]
+z_index = 2
+offset_left = 672.0
+offset_top = 240.0
+offset_right = 672.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 16
+text = "(14,5)"
+
+[node name="Cell(14,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1483217390]
+position = Vector2(672, 288)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,6)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=2013779274]
+z_index = 1
+position = Vector2(672, 288)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("8_i3omk")
+
+[node name="Label(14,6)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=1143781558]
+z_index = 2
+offset_left = 672.0
+offset_top = 288.0
+offset_right = 672.0
+offset_bottom = 288.0
+theme_override_font_sizes/font_size = 16
+text = "(14,6)"
+
+[node name="Cell(14,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=1055888649]
+position = Vector2(672, 336)
+scale = Vector2(0.30967742, 0.30967742)
+texture = ExtResource("12_sg7kf")
+
+[node name="Piece(14,7)" type="Sprite2D" parent="Demo/Match3Board/Match3Preview" unique_id=175068457]
+z_index = 1
+position = Vector2(672, 336)
+scale = Vector2(0.63750005, 0.63750005)
+texture = ExtResource("9_yhgbj")
+
+[node name="Label(14,7)" type="Label" parent="Demo/Match3Board/Match3Preview" unique_id=69239024]
+z_index = 2
+offset_left = 672.0
+offset_top = 336.0
+offset_right = 672.0
+offset_bottom = 336.0
+theme_override_font_sizes/font_size = 16
+text = "(14,7)"
