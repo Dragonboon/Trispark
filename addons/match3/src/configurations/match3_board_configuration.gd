@@ -101,6 +101,8 @@ enum AnimationFlow {
 @export var available_moves_on_start: int = 25
 ## When enabled, the matches that could appear in the first board preparation will stay there and be consumed as sequences
 @export var allow_matches_on_start: bool = false
+## -1 randomizes each session; any nonnegative value reproduces a sequence.
+@export var random_seed: int = -1
 
 @export_group("Sequences")
 ## Set the rules to spawn new special pieces in the board 

@@ -2,8 +2,8 @@ class_name Match3PieceWeight extends Resource
 
 @export var value: float = 1.0:
 	set(value):
-		value = maxf(0.0, value)
-		current_weight = value
+		field = maxf(0.0, value)
+		current_weight = field
 		
 var current_weight: float = value
 var total_accum_weight: float = 0.0
@@ -14,7 +14,7 @@ func reset_accum_weight() -> void:
 
 
 func change_weight(new_value: float) -> void:
-	current_weight = new_value
+	current_weight = maxf(0.0, new_value)
 
 
 func change_to_original_weight() -> void:

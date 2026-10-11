@@ -105,6 +105,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	assert(configuration != null, "Match3Board: This board needs a configuration")
+	# The editor Resource is a reusable preset, never the mutable game session.
+	# Duplicate arrays and embedded Resources while leaving heavy external scenes shared.
+	configuration = configuration.duplicate(true) as Match3BoardConfiguration
 	
 	if configuration.swap_mode_is_connect_line():
 		assert(line_connector != null, "Match3Board: The swap mode ConnectLine needs a line connector in this board")
@@ -116,6 +119,7 @@ func _ready() -> void:
 	sequence_consumer = Match3SequenceConsumer.new(self, configuration.sequence_rules)
 	current_available_moves = configuration.available_moves_on_start
 	
+	piece_generator.set_seed(configuration.random_seed)
 	add_pieces_to_generator(configuration.available_pieces)
 
 	swap_accepted.connect(on_swap_accepted)
@@ -295,7 +299,11 @@ func draw_piece_on_cell(cell: Match3GridCell, piece: Match3Piece, replace: bool 
 
 func draw_random_piece_on_cell(cell: Match3GridCell, replace: bool = false) -> Match3Piece:
 	if cell.can_contain_piece and (cell.is_empty() or replace):
-		var piece: Match3Piece = Match3Piece.from_configuration(piece_generator.roll())
+		var selected_configuration := piece_generator.roll()
+		if selected_configuration == null:
+			push_error("Match3Board: No piece with a positive spawn weight is available.")
+			return null
+		var piece: Match3Piece = Match3Piece.from_configuration(selected_configuration)
 		draw_piece_on_cell(cell, piece, replace)
 		
 		return piece
