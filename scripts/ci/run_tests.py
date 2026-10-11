@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 ERROR = re.compile(r"(?:SCRIPT ERROR:|Parse Error:|Failed to load script|^ERROR:|Assertion failed)", re.MULTILINE)
 
 
-def run(command: list[str], timeout: int, require_pass: bool = False) -> bool:
+def run(command: list[str], timeout: int, require_pass: bool = False, pass_marker: str = "") -> bool:
     print("$ " + " ".join(command), flush=True)
     try:
         process = subprocess.run(command, cwd=ROOT, capture_output=True, text=True,
@@ -24,7 +24,7 @@ def run(command: list[str], timeout: int, require_pass: bool = False) -> bool:
     print(output, flush=True)
     ok = process.returncode == 0 and not ERROR.search(output)
     if require_pass:
-        ok = ok and "Match3 diagonal/gravity regression: PASS" in output
+        ok = ok and pass_marker in output
     return bool(ok)
 
 
@@ -36,9 +36,11 @@ def main() -> int:
     root = str(ROOT)
     if not run([args.godot, "--headless", "--path", root, "--editor", "--quit"], args.timeout):
         return 1
-    if not run([args.godot, "--headless", "--path", root, "--script",
-                "res://tests/test_diagonals.gd"], args.timeout, require_pass=True):
-        return 1
+    for script, marker in [("test_diagonals.gd", "Match3 diagonal/gravity regression: PASS"),
+                           ("test_movement_api.gd", "Match3 movement API regression: PASS")]:
+        if not run([args.godot, "--headless", "--path", root, "--script",
+                    "res://tests/" + script], args.timeout, require_pass=True, pass_marker=marker):
+            return 1
     print("RESULT: PASS", flush=True)
     return 0
 

@@ -8,10 +8,6 @@
 
 config_version=5
 
-[Match3_Board]
-
-config/ninetailsrabbit.match3_board/update_notification_enabled=true
-
 [application]
 
 config/name="Match3_Board"

@@ -2,7 +2,7 @@ name: Godot 4.7 regression
 
 on:
   push:
-    branches: [main, refactor/godot-4-7-match3-api]
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
