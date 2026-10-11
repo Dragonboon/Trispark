@@ -106,6 +106,13 @@ enum AnimationFlow {
 ## Set the rules to spawn new special pieces in the board 
 @export var sequence_rules: Array[SequenceConsumeRule] = []
 
+@export_group("Event Reactions")
+## Optional Resource reactions; empty means no reactions and no extra scene nodes.
+## Signals and event_emitted remain available regardless of this array.
+@export var event_reactions: Array[Match3Reaction] = []
+
+@export_group("Sequences")
+
 ## When enabled, horizontal matchs between pieces are allowed
 @export var horizontal_shape: bool = true
 ## When enabled, vertical matchs between pieces are allowed

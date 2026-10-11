@@ -1,7 +1,10 @@
 class_name Match3Board extends Node2D
 
 const GroupName: StringName = &"match3-board"
+const EventBridge = preload("res://addons/match3/src/events/match3_event_bridge.gd")
 
+## Context-rich companion to the existing granular signals; sent before Resources react.
+signal event_emitted(event: Match3BoardEvent)
 signal state_changed(from: BoardState, to: BoardState)
 signal swap_accepted(from: Match3GridCell, to: Match3GridCell)
 signal swap_rejected(from: Match3GridCell, to: Match3GridCell)
@@ -42,6 +45,7 @@ var finder: Match3BoardFinder = Match3BoardFinder.new(self)
 var fall_mover: Match3FallMover = Match3FallMover.new(self)
 var filler: Match3Filler = Match3Filler.new(self)
 var sequence_detector: Match3SequenceDetector = Match3SequenceDetector.new(self)
+var _event_bridge: RefCounted
 var sequence_consumer: Match3SequenceConsumer
 var shuffler: Match3Shuffler = Match3Shuffler.new(self)
 var piece_generator: Match3PieceGenerator = Match3PieceGenerator.new()
@@ -105,6 +109,10 @@ func _ready() -> void:
 	if configuration.swap_mode_is_connect_line():
 		assert(line_connector != null, "Match3Board: The swap mode ConnectLine needs a line connector in this board")
 	
+	_event_bridge = EventBridge.new(self)
+	for child in get_children():
+		if child is Match3Piece:
+			_event_bridge.call("track_piece", child)
 	sequence_consumer = Match3SequenceConsumer.new(self, configuration.sequence_rules)
 	current_available_moves = configuration.available_moves_on_start
 	
@@ -639,6 +647,8 @@ func state_is_fill() -> bool:
 #region Signal callbacks 
 func on_child_entered_tree(child: Node) -> void:
 	if child is Match3Piece:
+		if _event_bridge != null:
+			_event_bridge.call("track_piece", child)
 		if not child.selected.is_connected(on_selected_piece.bind(child)):
 			child.selected.connect(on_selected_piece.bind(child))
 		
