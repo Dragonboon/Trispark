@@ -126,39 +126,6 @@ func _ready() -> void:
 		await draw_pieces()
 	
 
-## Build a board explicitly when auto_start is disabled. Safe to call repeatedly.
-func start_board() -> void:
-	if configuration == null:
-		push_error("Match3Board needs a configuration")
-		return
-	if grid_cells.is_empty():
-		await draw_cells()
-	if pieces().is_empty():
-		await draw_pieces()
-
-
-## Find a logical cell by column and row; returns null out of bounds.
-func get_cell(column: int, row: int) -> Match3GridCell:
-	return finder.get_cell(column, row)
-
-
-## Find all current board matches, including diagonals when enabled.
-func get_matches() -> Array[Match3Sequence]:
-	return sequence_detector.find_board_sequences()
-
-
-## True while the board can accept user moves.
-func is_interaction_enabled() -> bool:
-	return not is_locked and state_is_wait_for_input()
-
-
-func set_interaction_enabled(enabled: bool) -> void:
-	if enabled:
-		unlock()
-	else:
-		lock()
-
-
 func distance() -> int:
 	return configuration.grid_width + configuration.grid_height
 	
@@ -309,9 +276,8 @@ func add_piece_to_generator(piece_configuration: Match3PieceConfiguration) -> Ma
 #region Pieces
 func remove_matches_from_board() -> void:
 	var sequences: Array[Match3Sequence] = sequence_detector.find_board_sequences()
-	var attempts := 0
-	while not sequences.is_empty() and attempts < 100:
-		attempts += 1
+	
+	while sequences.size() > 0:
 		for sequence: Match3Sequence in sequences:
 			var cells_to_change = sequence.cells.slice(0, (sequence.cells.size() / configuration.min_match) + 1)
 			var piece_exceptions: Array[Match3PieceConfiguration] = []
@@ -480,8 +446,10 @@ func consume_special_pieces(special_pieces: Array[Match3Piece] = pending_special
 func fall_pieces() -> void:
 	var fall_movements: Array[Match3FallMover.FallMovement] = fall_mover.fall_pieces()
 	
+	# Clear origins first; a destination can also be another piece's origin.
 	for movement in fall_movements:
 		movement.from_cell.piece = null
+	for movement in fall_movements:
 		movement.to_cell.piece = movement.piece
 	
 	if animator:
@@ -640,21 +608,18 @@ func on_child_entered_tree(child: Node) -> void:
 
 
 func on_drawed_cells(cells: Array[Match3GridCell]) -> void:
-		if not configuration.auto_start:
-			await draw_cells()
+		pass # Cells are already drawn. Manual start_board() handles the explicit path.
 
 
 func on_drawed_pieces(pieces: Array[Match3Piece]) -> void:
 	if configuration.allow_matches_on_start:
-		if not configuration.auto_start:
-			await draw_pieces()
+		pass # Manual initialization is controlled by start_board().
 		
 		travel_to(BoardState.Consume)
 	else:
 		remove_matches_from_board()
 		
-		if not configuration.auto_start:
-			await draw_pieces()
+		pass # Manual initialization is controlled by start_board().
 
 
 func on_board_locked() -> void:

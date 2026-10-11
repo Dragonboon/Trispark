@@ -1,0 +1,26 @@
+name: Godot 4.7 regression
+
+on:
+  push:
+    branches: [main, refactor/godot-4-7-match3-api]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot 4.7.2
+        run: |
+          curl -fL --retry 3 -o godot.zip https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.2-stable_linux.x86_64
+      - name: Parse and import
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path . --editor --quit
+      - name: Regression suite
+        run: ./Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://tests/test_diagonals.gd
