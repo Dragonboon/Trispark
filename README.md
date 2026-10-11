@@ -88,3 +88,13 @@ python3 scripts/ci/run_tests.py --godot godot
 ```
 
 The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/sempitern0/match3-board/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).
+
+## Reusing presets and deterministic boards
+
+When the board enters the scene tree it makes a runtime copy of its `Match3BoardConfiguration`, so editing board settings at runtime does not change the preset assigned in the editor. Read runtime settings from `board.configuration`, not from a separately loaded `.tres`. Large external scene/texture assets can remain shared; custom Resources used by gameplay should not be mutated by reaction callbacks.
+
+Set `random_seed = -1` (default) for a different random sequence each session, or any nonnegative integer to reproduce the weighted piece-generation sequence. A fixed seed only guarantees the same generated sequence when the configuration, piece order, and number/order of generator calls are the same. Shuffle and other random operations are not included in this guarantee.
+
+For demo-free cell visuals, use `addons/match3/src/cells/basic_grid_cell.tscn` and assign your own texture resources to the cell properties. The original `grid_cell.tscn` retains its demo appearance for existing games.
+
+See [runtime integration notes](docs/RUNTIME_INTEGRATION.md) for multiboard integration and safe event handling.

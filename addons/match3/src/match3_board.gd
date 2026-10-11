@@ -342,28 +342,30 @@ func add_piece_to_generator(piece_configuration: Match3PieceConfiguration) -> Ma
 
 #region Pieces
 func remove_matches_from_board() -> void:
+	# Prevent endless initial rerolls for unsatisfiable piece catalogs.
 	var sequences: Array[Match3Sequence] = sequence_detector.find_board_sequences()
-	
-	while sequences.size() > 0:
+	var attempts := 0
+	while not sequences.is_empty() and attempts < 100:
+		attempts += 1
 		for sequence: Match3Sequence in sequences:
-			var cells_to_change = sequence.cells.slice(0, (sequence.cells.size() / configuration.min_match) + 1)
-			var piece_exceptions: Array[Match3PieceConfiguration] = []
-			
-			piece_exceptions.assign(Match3BoardPluginUtilities.remove_duplicates(
-				cells_to_change.map(
-					func(cell: Match3GridCell): 
-						return configuration.available_pieces.filter(
-							func(piece_conf: Match3PieceConfiguration): return cell.piece.id == piece_conf.id).front()
-							)
-					)
-				)
-			
-			for current_cell: Match3GridCell in cells_to_change:
-				current_cell.remove_piece()
-	
-				draw_piece_on_cell(current_cell, Match3Piece.from_configuration(piece_generator.roll(piece_exceptions)))
-			
+			var cells_to_change: Array[Match3GridCell] = []
+			cells_to_change.assign(sequence.cells.slice(0, (sequence.cells.size() / configuration.min_match) + 1))
+			var exclusions: Array[Match3PieceConfiguration] = []
+			for cell in cells_to_change:
+				for piece_conf in configuration.available_pieces:
+					if cell.has_piece() and cell.piece.id == piece_conf.id and not exclusions.has(piece_conf):
+						exclusions.append(piece_conf)
+						break
+			for cell in cells_to_change:
+				var replacement := piece_generator.roll(exclusions)
+				if replacement == null:
+					# With too few gem types, preserve the original instead of crashing.
+					push_warning("Match3Board: Cannot eliminate all starting matches with the current piece catalog.")
+					return
+				draw_piece_on_cell(cell, Match3Piece.from_configuration(replacement), true)
 		sequences = sequence_detector.find_board_sequences()
+	if not sequences.is_empty():
+		push_warning("Match3Board: Initial match elimination hit its retry limit.")
 
 
 func shuffle() -> void:
