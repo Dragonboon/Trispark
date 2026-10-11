@@ -89,34 +89,72 @@ func fall_pieces(movements: Array[Match3FallMover.FallMovement]) -> void:
 		await tween.finished
 
 
+## The fill mode selects the visual origin, independently of the filler logic.
+## InPlace pieces are already at their destination; reveal them without moving.
 func spawn_piece(cell: Match3GridCell) -> void:
-	if cell.has_piece():
-		var tween: Tween = create_tween()
-		var fall_distance = board.configuration.cell_size.y * board.configuration.grid_height
-		
+	if cell == null or not cell.has_piece():
+		return
+
+	if board.configuration.fill_mode_is_in_place():
+		var cells: Array[Match3GridCell] = [cell]
+		await _spawn_in_place(cells)
+		return
+
+	var tween: Tween = create_tween()
+	var fall_distance: float = board.configuration.cell_size.y * board.configuration.grid_height
+
+	cell.piece.hide()
+	tween.tween_property(cell.piece, "visible", true, 0.1)
+	tween.tween_property(cell.piece, "position", cell.position, 0.25)\
+		.set_trans(Tween.TRANS_QUAD).from(Vector2(cell.position.x, cell.position.y - fall_distance))
+
+	await tween.finished
+
+
+func spawn_pieces(cells: Array[Match3GridCell]) -> void:
+	var filled: Array[Match3GridCell] = []
+	for cell in cells:
+		if cell != null and cell.has_piece():
+			filled.append(cell)
+	if filled.is_empty():
+		return
+
+	if board.configuration.fill_mode_is_in_place():
+		await _spawn_in_place(filled)
+		return
+
+	var tween: Tween = create_tween().set_parallel(true)
+	var fall_distance: float = board.configuration.cell_size.y * board.configuration.grid_height
+
+	for cell in filled:
 		cell.piece.hide()
 		tween.tween_property(cell.piece, "visible", true, 0.1)
 		tween.tween_property(cell.piece, "position", cell.position, 0.25)\
 			.set_trans(Tween.TRANS_QUAD).from(Vector2(cell.position.x, cell.position.y - fall_distance))
-		
-		await tween.finished
-	
 
-func spawn_pieces(cells: Array[Match3GridCell]) -> void:
-	if cells.size() > 0:
-		var tween: Tween = create_tween().set_parallel(true)
-		
-		for cell: Match3GridCell in cells.filter(func(cell: Match3GridCell): return cell.has_piece()):
-			var fall_distance = board.configuration.cell_size.y * board.configuration.grid_height
-			
-			cell.piece.hide()
-			tween.tween_property(cell.piece, "visible", true, 0.1)
-			tween.tween_property(cell.piece, "position", cell.position, 0.25)\
-				.set_trans(Tween.TRANS_QUAD).from(Vector2(cell.position.x, cell.position.y - fall_distance))
-			
-		await tween.finished
-	
-	
+	await tween.finished
+
+
+func _spawn_in_place(cells: Array[Match3GridCell]) -> void:
+	var tween: Tween = create_tween().set_parallel(true)
+	for cell in cells:
+		var piece: Match3Piece = cell.piece
+		var final_scale: Vector2 = piece.scale
+		var final_alpha: float = piece.modulate.a
+
+		piece.position = cell.position
+		piece.scale = final_scale * 0.65
+		piece.modulate.a = 0.0
+		piece.show()
+
+		tween.tween_property(piece, "scale", final_scale, 0.2)\
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tween.tween_property(piece, "modulate:a", final_alpha, 0.2)\
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+	await tween.finished
+
+
 func trigger_special_piece(piece: Match3Piece) -> void:
 	if is_instance_valid(piece):
 		match piece.id:
