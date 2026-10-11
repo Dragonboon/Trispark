@@ -41,14 +41,19 @@ func on_board_locked() -> void:
 func on_selected_piece(piece: Match3Piece) -> void:
 	if piece.is_special() and piece.can_be_triggered:
 		return
-	
+	remove_highlight()
+	highlight_cells(board.get_valid_swap_targets(piece.cell))
+
 
 func on_unselected_piece(_piece: Match3Piece) -> void:
 	remove_highlight()
 
 
-func on_connected_piece(_piece: Match3Piece) -> void:
-	pass
+func on_connected_piece(piece: Match3Piece) -> void:
+	if board.configuration.swap_mode_is_connect_line():
+		remove_highlight()
+		if board.line_connector.can_connect_more_pieces():
+			highlight_cells(board.line_connector.matches_from_piece(piece))
 
 
 func on_confirmed_line_connector_match(_pieces: Array[Match3Piece]) -> void:

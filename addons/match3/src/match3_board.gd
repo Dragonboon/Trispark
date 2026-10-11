@@ -59,7 +59,7 @@ var current_available_moves: int = 0:
 			if value < previous_moves:
 				movement_consumed.emit()
 			
-			elif value == 0:
+			if value == 0 and previous_moves > 0:
 				finished_available_movements.emit()
 			
 
@@ -115,8 +115,7 @@ func _ready() -> void:
 	locked.connect(on_board_locked)
 	unlocked.connect(on_board_unlocked)
 	state_changed.connect(on_board_state_changed)
-	drawed_cells.connect(on_drawed_cells)
-	drawed_pieces.connect(on_drawed_pieces)
+drawed_pieces.connect(on_drawed_pieces)
 	
 	if line_connector:
 		line_connector.canceled_match.connect(on_line_connector_canceled_match)
@@ -125,6 +124,58 @@ func _ready() -> void:
 		await draw_cells()
 		await draw_pieces()
 	
+
+## Idempotent manual initialization for configurations with auto_start = false.
+func start_board() -> void:
+	if grid_cells.is_empty():
+		await draw_cells()
+	if pieces().is_empty():
+		await draw_pieces()
+
+
+## Access the logical grid, or null when outside its bounds.
+func get_cell(column: int, row: int) -> Match3GridCell:
+	return finder.get_cell(column, row)
+
+
+func get_matches() -> Array[Match3Sequence]:
+	return sequence_detector.find_board_sequences()
+
+
+func is_interaction_enabled() -> bool:
+	return not is_locked and state_is_wait_for_input()
+
+
+func set_interaction_enabled(enabled: bool) -> void:
+	if enabled:
+		unlock()
+	else:
+		lock()
+
+
+## Pure query used by gameplay and highlighters; never queues special pieces.
+func can_swap_cells(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
+	if configuration == null or from_cell == null or to_cell == null:
+		return false
+	if not from_cell.can_contain_piece or not to_cell.can_contain_piece:
+		return false
+	if not from_cell.can_swap_piece_with_cell(to_cell):
+		return false
+	if from_cell.piece.is_normal() and to_cell.piece.is_normal() and from_cell.piece.match_with(to_cell.piece):
+		return false
+	return _swap_positions_allowed(from_cell, to_cell)
+
+
+## Always agrees with can_swap_cells(), including optional custom movement rules.
+func get_valid_swap_targets(origin: Match3GridCell) -> Array[Match3GridCell]:
+	var targets: Array[Match3GridCell] = []
+	if origin == null or configuration == null or configuration.swap_mode_is_connect_line():
+		return targets
+	for cell: Match3GridCell in grid_cells_flattened:
+		if can_swap_cells(origin, cell):
+			targets.append(cell)
+	return targets
+
 
 func distance() -> int:
 	return configuration.grid_width + configuration.grid_height
@@ -497,7 +548,8 @@ func swap_pieces(from_piece: Match3Piece, to_piece: Match3Piece) -> void:
 			
 		if from_cell.swap_piece_with_cell(to_cell):
 			swap_accepted.emit(from_cell, to_cell)
-			current_available_moves -= 1
+			if current_available_moves != -1:
+				current_available_moves -= 1
 			
 			await get_tree().process_frame
 			
@@ -530,53 +582,43 @@ func swap_pieces(from_piece: Match3Piece, to_piece: Match3Piece) -> void:
 		swap_rejected.emit(from_cell, to_cell)
 			
 
+## Validate first, then queue specials only for actually permitted swaps.
 func swap_movement_is_valid(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
-	if not from_cell.can_swap_piece_with_cell(to_cell):
+	if not can_swap_cells(from_cell, to_cell):
 		return false
-		
-	elif not from_cell.piece.is_special() and not to_cell.piece.is_special() and from_cell.piece.match_with(to_cell.piece):
-		return false
-	
-	elif from_cell.piece.is_special() and to_cell.piece.is_special():
-		add_special_pieces_to_queue([from_cell.piece, to_cell.piece])
-		return true
-		
-	elif from_cell.piece.is_special() and not to_cell.piece.is_special():
+	if from_cell.piece.is_special():
 		add_special_piece_to_queue(from_cell.piece)
-		return true
-		
-	elif not from_cell.piece.is_special() and to_cell.piece.is_special():
+	if to_cell.piece.is_special():
 		add_special_piece_to_queue(to_cell.piece)
-		return true
-	
+	return true
+
+
+func _swap_positions_allowed(from_cell: Match3GridCell, to_cell: Match3GridCell) -> bool:
+	if configuration.swap_mode_is_connect_line():
+		return false
+	if configuration.movement_adapter != null:
+		return configuration.movement_adapter.allows_swap(self, from_cell, to_cell)
 	match configuration.swap_mode:
 		Match3BoardConfiguration.BoardMovements.Adjacent:
 			return from_cell.is_adjacent_to(to_cell)
-			
 		Match3BoardConfiguration.BoardMovements.AdjacentWithDiagonals:
-			return from_cell.is_diagonal_adjacent_to(to_cell)
-			
+			return from_cell.is_adjacent_to(to_cell, true)
 		Match3BoardConfiguration.BoardMovements.AdjacentDiagonals:
 			return from_cell.in_diagonal_with(to_cell)
-			
 		Match3BoardConfiguration.BoardMovements.Free:
 			return true
-			
 		Match3BoardConfiguration.BoardMovements.Row:
 			return from_cell.in_same_row_as(to_cell)
-			
 		Match3BoardConfiguration.BoardMovements.Column:
 			return from_cell.in_same_column_as(to_cell)
-			
 		Match3BoardConfiguration.BoardMovements.Cross:
-			return finder.cross_cells_from(from_cell).has(to_cell)
-			
+			return from_cell.in_same_row_as(to_cell) or from_cell.in_same_column_as(to_cell)
 		Match3BoardConfiguration.BoardMovements.CrossDiagonal:
-			return finder.cross_diagonal_cells_from(from_cell).has(to_cell)
-		_:
-			return false
-			
-			
+			var difference := to_cell.board_position() - from_cell.board_position()
+			return difference.x != 0 and absi(difference.x) == absi(difference.y)
+	return false
+
+
 func state_is_wait_for_input() -> bool:
 	return current_state == BoardState.WaitForInput
 	
@@ -607,19 +649,12 @@ func on_child_entered_tree(child: Node) -> void:
 			child.drag_ended.connect(on_piece_drag_ended.bind(child))
 
 
-func on_drawed_cells(cells: Array[Match3GridCell]) -> void:
-		pass # Cells are already drawn. Manual start_board() handles the explicit path.
-
 
 func on_drawed_pieces(pieces: Array[Match3Piece]) -> void:
 	if configuration.allow_matches_on_start:
-		pass # Manual initialization is controlled by start_board().
-		
 		travel_to(BoardState.Consume)
 	else:
 		remove_matches_from_board()
-		
-		pass # Manual initialization is controlled by start_board().
 
 
 func on_board_locked() -> void:

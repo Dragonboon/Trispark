@@ -79,6 +79,8 @@ enum AnimationFlow {
 @export_group("Modes")
 ## The swap mode to use on this board, each has its own particularities and can be changed at runtime.
 @export var swap_mode: BoardMovements = BoardMovements.Adjacent
+## Optional Resource policy overriding spatial swap rules for non-ConnectLine modes.
+@export var movement_adapter: Match3MovementAdapter
 ## The click mode defines if the swap is made by select & click or dragging the piece to the desired place
 @export var selection_mode: BoardSelectionMode = BoardSelectionMode.Click
 ## The fill mode defines how the pieces are redrawed into the board.

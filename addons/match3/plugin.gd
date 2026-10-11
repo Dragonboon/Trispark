@@ -9,9 +9,9 @@ func _enter_tree() -> void:
 	
 	add_custom_type("Match3Board", "Node2D", preload("res://addons/match3/src/match3_board.gd"), preload("assets/board.svg"))
 	add_custom_type("Match3BoardPreview", "Node2D", preload("res://addons/match3/src/tools/match3_preview.gd"), preload("assets/board_preview.svg"))
-	add_custom_type("Match3Animator", "Node2D", preload("res://addons/match3/src/ui/match3_animator.gd"), preload("assets/animator.svg"))
-	add_custom_type("Match3Highlighter", "Node2D", preload("res://addons/match3/src/ui/match3_highlighter.gd"), preload("assets/light.svg"))
-	add_custom_type("Match3LineConnector", "Node2D", preload("res://addons/match3/src/pieces/line_connector.gd"), null)
+	add_custom_type("Match3Animator", "Node", preload("res://addons/match3/src/ui/match3_animator.gd"), preload("assets/animator.svg"))
+	add_custom_type("Match3Highlighter", "Node", preload("res://addons/match3/src/ui/match3_highlighter.gd"), preload("assets/light.svg"))
+	add_custom_type("Match3LineConnector", "Line2D", preload("res://addons/match3/src/pieces/line_connector.gd"), null)
 	
 
 func _exit_tree() -> void:
