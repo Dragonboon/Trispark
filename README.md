@@ -3,7 +3,7 @@
   <h1>Match3-Board</h1>
   <p><strong>A configurable match-3 gameplay toolkit for Godot 4.7.</strong></p>
   <p>Build boards from Resources. Customize movement, presentation and game reactions without forking the plugin.</p>
-  <p><a href="https://github.com/sempitern0/Trispark/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/sempitern0/Trispark/issues">Issues</a> · <a href="docs/CUSTOMIZATION.md">Customization</a> · <a href="docs/EVENTS_AND_REACTIONS.md">Events</a></p>
+  <p><a href="https://github.com/Dragonboon/Trispark/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/Dragonboon/Trispark/issues">Issues</a> · <a href="docs/CUSTOMIZATION.md">Customization</a> · <a href="docs/EVENTS_AND_REACTIONS.md">Events</a></p>
 </div>
 
 ![Interactive Match3 demo](images/demo.png)
@@ -87,7 +87,7 @@ Godot **4.7.2** is the CI target. To execute the headless regressions:
 python3 scripts/ci/run_tests.py --godot godot
 ```
 
-The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/sempitern0/Trispark/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).
+The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/Dragonboon/Trispark/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).
 
 ## Reusing presets and deterministic boards
 

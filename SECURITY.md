@@ -8,4 +8,4 @@
 
 ## Reporting a Vulnerability
 
-Please [raise an issue](https://github.com/sempitern0/Trispark/issues) in case you find a security issue.
+Please [raise an issue](https://github.com/Dragonboon/Trispark/issues) in case you find a security issue.
