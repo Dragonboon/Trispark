@@ -27,23 +27,23 @@ For more complex art, render glow, a ShaderMaterial, particles or an overlay in 
 
 Assign an optional `Match3Animator` subclass to the board's `animator`. It declares the following overridable methods:
 
-| Hook | Arguments | Purpose |
-|---|---|---|
-| `draw_cells` | cells | Initial cell reveal |
-| `draw_pieces` | pieces | Initial gem reveal |
-| `swap_pieces` | from, to, target positions | Accepted swap |
-| `swap_rejected_pieces` | from, to, target positions | Snap back |
-| `consume_sequence` | sequence | Serial matching |
-| `consume_sequences` | consume results | Parallel matching |
-| `fall_piece` | movement | Serial gravity |
-| `fall_pieces` | movements | Parallel gravity |
-| `spawn_piece` | cell | Serial refill |
-| `spawn_pieces` | cells | Parallel refill |
-| `trigger_special_piece` | piece | Special effect |
-| `piece_drag_ended` | piece | Input release |
-| `shuffle` | movements | Board reshuffle |
+| Hook                    | Arguments                  | Purpose             |
+| ----------------------- | -------------------------- | ------------------- |
+| `draw_cells`            | cells                      | Initial cell reveal |
+| `draw_pieces`           | pieces                     | Initial gem reveal  |
+| `swap_pieces`           | from, to, target positions | Accepted swap       |
+| `swap_rejected_pieces`  | from, to, target positions | Snap back           |
+| `consume_sequence`      | sequence                   | Serial matching     |
+| `consume_sequences`     | consume results            | Parallel matching   |
+| `fall_piece`            | movement                   | Serial gravity      |
+| `fall_pieces`           | movements                  | Parallel gravity    |
+| `spawn_piece`           | cell                       | Serial refill       |
+| `spawn_pieces`          | cells                      | Parallel refill     |
+| `trigger_special_piece` | piece                      | Special effect      |
+| `piece_drag_ended`      | piece                      | Input release       |
+| `shuffle`               | movements                  | Board reshuffle     |
 
-The **interactive demo animator** in `addons/match3/demo/demo_animator.gd` is the complete reference implementation. Override only what your game needs; the base class is intentionally no-op. Animation methods may `await tween.finished`; the board awaits them in relevant transitions. The `draw_cells_and_pieces_animation`, `sequence_animation`, `fall_animation` and `fill_animation` Resource properties select serial or parallel flow.
+The **interactive demo animator** in `addons/trispark/demo/demo_animator.gd` is the complete reference implementation. Override only what your game needs; the base class is intentionally no-op. Animation methods may `await tween.finished`; the board awaits them in relevant transitions. The `draw_cells_and_pieces_animation`, `sequence_animation`, `fall_animation` and `fill_animation` Resource properties select serial or parallel flow.
 
 ```gdscript
 extends Match3Animator

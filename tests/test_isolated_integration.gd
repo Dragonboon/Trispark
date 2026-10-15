@@ -46,7 +46,7 @@ func _initialize() -> void:
 	assert(base_config.available_pieces.size() == 3, "Configuration arrays must not be shared.")
 	assert(runtime.random_seed == 27)
 
-	var bare := load("res://addons/match3/src/cells/basic_grid_cell.tscn") as PackedScene
+	var bare := load("res://addons/trispark/src/cells/basic_grid_cell.tscn") as PackedScene
 	assert(bare != null, "Basic grid scene not included.")
 	var cell := bare.instantiate() as Match3GridCell
 	assert(cell != null and cell.odd_cell_texture == null, "Basic cell depends on demo assets.")

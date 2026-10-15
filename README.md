@@ -3,7 +3,7 @@
   <h1>Match3-Board</h1>
   <p><strong>A configurable match-3 gameplay toolkit for Godot 4.7.</strong></p>
   <p>Build boards from Resources. Customize movement, presentation and game reactions without forking the plugin.</p>
-  <p><a href="https://github.com/sempitern0/match3-board/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/sempitern0/match3-board/issues">Issues</a> · <a href="docs/CUSTOMIZATION.md">Customization</a> · <a href="docs/EVENTS_AND_REACTIONS.md">Events</a></p>
+  <p><a href="https://github.com/sempitern0/Trispark/blob/main/LICENSE">MIT License</a> · <a href="https://github.com/sempitern0/Trispark/issues">Issues</a> · <a href="docs/CUSTOMIZATION.md">Customization</a> · <a href="docs/EVENTS_AND_REACTIONS.md">Events</a></p>
 </div>
 
 ![Interactive Match3 demo](images/demo.png)
@@ -20,9 +20,9 @@
 
 ## Installation
 
-Copy the [`addons/match3/`](addons/match3) folder into your Godot project's `res://addons/match3/` directory. Enable **Match3-Board** in **Project → Project Settings → Plugins**.
+Copy the [`addons/trispark/`](addons/trispark) folder into your Godot project's `res://addons/trispark/` directory. Enable **Match3-Board** in **Project → Project Settings → Plugins**.
 
-**Try the complete demo:** open [`addons/match3/demo/demo.tscn`](addons/match3/demo/demo.tscn). It demonstrates the existing gameplay modes, animations, selection and highlighting. Demo scripts and assets are reference examples, not mandatory for a minimal integration.
+**Try the complete demo:** open [`addons/trispark/demo/demo.tscn`](addons/trispark/demo/demo.tscn). It demonstrates the existing gameplay modes, animations, selection and highlighting. Demo scripts and assets are reference examples, not mandatory for a minimal integration.
 
 ## Quick start
 
@@ -53,29 +53,29 @@ func valid_destinations(from_cell: Match3GridCell) -> Array[Match3GridCell]:
 
 ## Public API
 
-| API | Purpose |
-|---|---|
-| `start_board()` | Initialize manually when auto-start is disabled |
-| `get_cell(column, row)` | Access a grid cell |
-| `get_matches()` | Find matching sequences |
-| `can_swap_cells(from, to)` | Pure validity check |
-| `get_valid_swap_targets(cell)` | Find allowed destinations, including custom movement adapter rules |
-| `swap_pieces(from_piece, to_piece)` | Request an animated or immediate swap |
-| `shuffle()` | Shuffle the board |
-| `lock()` / `unlock()` | Toggle interaction |
+| API                                 | Purpose                                                            |
+| ----------------------------------- | ------------------------------------------------------------------ |
+| `start_board()`                     | Initialize manually when auto-start is disabled                    |
+| `get_cell(column, row)`             | Access a grid cell                                                 |
+| `get_matches()`                     | Find matching sequences                                            |
+| `can_swap_cells(from, to)`          | Pure validity check                                                |
+| `get_valid_swap_targets(cell)`      | Find allowed destinations, including custom movement adapter rules |
+| `swap_pieces(from_piece, to_piece)` | Request an animated or immediate swap                              |
+| `shuffle()`                         | Shuffle the board                                                  |
+| `lock()` / `unlock()`               | Toggle interaction                                                 |
 
 Use signals such as `state_changed`, `swap_accepted`, `swap_rejected`, `consumed_sequence`, `drawed_pieces`, `selected_piece` and `finished_available_movements`. For structured event context, use `event_emitted`.
 
 ## Extending your game
 
-| What to customize | Extension point |
-|---|---|
-| Rules, pieces and board geometry | `Match3BoardConfiguration`, `Match3PieceConfiguration`, `Match3PieceWeight` |
-| Swap restrictions | `Match3MovementAdapter` Resource |
-| Tile/gem appearance and special logic | `Match3GridCell` and `Match3Piece` scenes/scripts |
-| Highlights | `Match3Highlighter` subclass |
-| Transitions and tweens | `Match3Animator` subclass |
-| UI, SFX, VFX and game-specific actions | `Match3Reaction` Resources or native signals |
+| What to customize                      | Extension point                                                             |
+| -------------------------------------- | --------------------------------------------------------------------------- |
+| Rules, pieces and board geometry       | `Match3BoardConfiguration`, `Match3PieceConfiguration`, `Match3PieceWeight` |
+| Swap restrictions                      | `Match3MovementAdapter` Resource                                            |
+| Tile/gem appearance and special logic  | `Match3GridCell` and `Match3Piece` scenes/scripts                           |
+| Highlights                             | `Match3Highlighter` subclass                                                |
+| Transitions and tweens                 | `Match3Animator` subclass                                                   |
+| UI, SFX, VFX and game-specific actions | `Match3Reaction` Resources or native signals                                |
 
 **Guides:** [Full customization, every animator hook and settings](docs/CUSTOMIZATION.md) · [Events, reactive audio/animation and method calls](docs/EVENTS_AND_REACTIONS.md).
 
@@ -87,7 +87,7 @@ Godot **4.7.2** is the CI target. To execute the headless regressions:
 python3 scripts/ci/run_tests.py --godot godot
 ```
 
-The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/sempitern0/match3-board/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).
+The suite checks movement rules, diagonal/gravity behavior and the event/reaction API. See [GitHub Actions](https://github.com/sempitern0/Trispark/actions) for the status of each commit. This plugin is maintained by [sempitern0](https://github.com/sempitern0) and licensed under [MIT](LICENSE).
 
 ## Reusing presets and deterministic boards
 
@@ -95,7 +95,7 @@ When the board enters the scene tree it makes a runtime copy of its `Match3Board
 
 Set `random_seed = -1` (default) for a different random sequence each session, or any nonnegative integer to reproduce the weighted piece-generation sequence. A fixed seed only guarantees the same generated sequence when the configuration, piece order, and number/order of generator calls are the same. Shuffle and other random operations are not included in this guarantee.
 
-For demo-free cell visuals, use `addons/match3/src/cells/basic_grid_cell.tscn` and assign your own texture resources to the cell properties. The original `grid_cell.tscn` retains its demo appearance for existing games.
+For demo-free cell visuals, use `addons/trispark/src/cells/basic_grid_cell.tscn` and assign your own texture resources to the cell properties. The original `grid_cell.tscn` retains its demo appearance for existing games.
 
 See [runtime integration notes](docs/RUNTIME_INTEGRATION.md) for multiboard integration and safe event handling.
 

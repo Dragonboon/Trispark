@@ -53,9 +53,9 @@ Disabling input cancels the active selection/drag or line gesture. Existing anim
 
 ## Minimal installation with your own assets
 
-Copy the `addons/match3/` directory. The `src/cells/basic_grid_cell.tscn` scene is a neutral cell scene without any reference to demo textures. Create one or more scenes derived from `Match3Piece` with a `Sprite2D` child and configure them using `Match3PieceConfiguration`. Add them to the `available_pieces` array on a board Resource; configure optional `Match3PieceWeight` values for weighted spawning.
+Copy the `addons/trispark/` directory. The `src/cells/basic_grid_cell.tscn` scene is a neutral cell scene without any reference to demo textures. Create one or more scenes derived from `Match3Piece` with a `Sprite2D` child and configure them using `Match3PieceConfiguration`. Add them to the `available_pieces` array on a board Resource; configure optional `Match3PieceWeight` values for weighted spawning.
 
-The older `src/cells/grid_cell.tscn` scene intentionally retains the original example artwork. If you remove `addons/match3/demo/` for a lean distribution, use the neutral cell scene or your own replacement and ensure no installed scenes point into the demo folder.
+The older `src/cells/grid_cell.tscn` scene intentionally retains the original example artwork. If you remove `addons/trispark/demo/` for a lean distribution, use the neutral cell scene or your own replacement and ensure no installed scenes point into the demo folder.
 
 ## Generation and failure cases
 

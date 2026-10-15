@@ -26,7 +26,7 @@ func make_config() -> Match3BoardConfiguration:
 	config.auto_start = false
 	config.grid_width = 3
 	config.grid_height = 3
-	config.grid_cell_scene = load("res://addons/match3/src/cells/basic_grid_cell.tscn")
+	config.grid_cell_scene = load("res://addons/trispark/src/cells/basic_grid_cell.tscn")
 	config.available_pieces = [definition]
 	# This fixture isolates generation from the independent sequence detector tests.
 	config.horizontal_shape = false

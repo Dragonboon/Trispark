@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bts0lo67u1h2b"]
+
+[ext_resource type="Script" uid="uid://d3m2xs160u6xl" path="res://addons/trispark/src/pieces/piece.gd" id="1_at6st"]
+[ext_resource type="Texture2D" uid="uid://dchtf3oa72c7v" path="res://addons/trispark/demo/assets/green_gem.png" id="3_2ytg8"]
+
+[node name="GreenGemPieceUI" type="Node2D"]
+script = ExtResource("1_at6st")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_2ytg8")

@@ -16,10 +16,6 @@ config/version="2.1.0"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/match3/plugin.cfg")
-
 [input]
 
 cancel_line_connector={
